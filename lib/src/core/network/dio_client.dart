@@ -10,7 +10,9 @@ class DioClient {
           headers: {'Content-Type': 'application/json'},
         ),
       ) {
-    _dio.interceptors.add(LogInterceptor(responseBody: true));
+    _dio.interceptors.add(
+      LogInterceptor(responseBody: true, requestBody: true),
+    );
   }
 
   final Dio _dio;

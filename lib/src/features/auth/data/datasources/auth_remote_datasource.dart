@@ -6,7 +6,7 @@ import 'package:story_app/src/features/auth/data/models/register_response_model.
 
 abstract class AuthRemoteDatasource {
   Future<bool> login(String email, String password);
-  Future<bool> register(String name, String email, String password);
+  Future<String> register(String name, String email, String password);
   Future<bool> hasToken();
   Future<void> logout();
 }
@@ -39,7 +39,6 @@ class AuthRemoteDatasourceImpl extends AuthRemoteDatasource {
     } on DioException catch (e) {
       final errorResponse = e.response?.data;
       if (errorResponse != null) {
-        // Kita juga bisa parse error menggunakan model jika strukturnya konsisten
         final message = errorResponse['message'] ?? e.message;
         throw Exception(message);
       }
@@ -50,7 +49,7 @@ class AuthRemoteDatasourceImpl extends AuthRemoteDatasource {
   }
 
   @override
-  Future<bool> register(String name, String email, String password) async {
+  Future<String> register(String name, String email, String password) async {
     try {
       final response = await dioClient.dio.post(
         '/register',
@@ -60,7 +59,7 @@ class AuthRemoteDatasourceImpl extends AuthRemoteDatasource {
       final registerResponse = RegisterResponseModel.fromJson(response.data);
 
       if (!registerResponse.error) {
-        return true;
+        return registerResponse.message;
       } else {
         throw Exception(registerResponse.message);
       }

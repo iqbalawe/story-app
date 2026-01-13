@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
+      body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -35,39 +35,49 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-              ),
-              TextField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(
-                    AuthLoginRequested(
-                      _emailController.text,
-                      _passwordController.text,
-                    ),
-                  );
-                },
-                child: Text("Login"),
-              ),
-              TextButton(
-                onPressed: () => context.go('/register'), // Pindah ke Register
-                child: Text("Belum punya akun? Register"),
-              ),
-            ],
-          ),
-        ),
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: state is AuthLoading
+                      ? null
+                      : () {
+                          context.read<AuthBloc>().add(
+                            AuthLoginRequested(
+                              _emailController.text,
+                              _passwordController.text,
+                            ),
+                          );
+                        },
+                  child: state is AuthLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text("Login"),
+                ),
+                TextButton(
+                  onPressed: () => context.go('/register'),
+                  child: Text("Belum punya akun? Register"),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

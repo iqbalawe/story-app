@@ -13,7 +13,14 @@ final class AuthLoading extends AuthState {}
 
 final class AuthLoginSuccess extends AuthState {}
 
-final class AuthRegisterSuccess extends AuthState {}
+final class AuthRegisterSuccess extends AuthState {
+  const AuthRegisterSuccess(this.message);
+
+  final String message;
+
+  @override
+  List<Object> get props => [message];
+}
 
 final class Authenticated extends AuthState {}
 
