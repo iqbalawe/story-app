@@ -15,6 +15,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool _isVisible = true;
+
+  void _passwordVisibilityHandler() {
+    setState(() {
+      _isVisible = !_isVisible;
+    });
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -45,42 +53,93 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
         },
         builder: (context, state) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-              ),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-              ),
-              ElevatedButton(
-                onPressed: state is AuthLoading
-                    ? null
-                    : () {
-                        context.read<AuthBloc>().add(
-                          AuthRegisterRequested(
-                            _nameController.text,
-                            _emailController.text,
-                            _passwordController.text,
-                          ),
-                        );
-                      },
-                child: state is AuthLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Text('Register'),
-              ),
-            ],
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Create account',
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Sign up to share stories with your friends',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 48),
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    suffixIcon: Icon(Icons.person_outline),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    suffixIcon: Icon(Icons.mail_outline),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      onPressed: _passwordVisibilityHandler,
+                      icon: Icon(
+                        _isVisible
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: state is AuthLoading
+                      ? null
+                      : () {
+                          context.read<AuthBloc>().add(
+                            AuthRegisterRequested(
+                              _nameController.text,
+                              _emailController.text,
+                              _passwordController.text,
+                            ),
+                          );
+                        },
+                  child: state is AuthLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text('Register'),
+                ),
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Sudah punya akun? ',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    GestureDetector(
+                      onTap: () => context.go('/login'),
+                      child: Text(
+                        'Masuk',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           );
         },
       ),

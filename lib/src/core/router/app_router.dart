@@ -4,6 +4,7 @@ import 'package:story_app/src/features/auth/presentation/blocs/bloc/auth_bloc.da
 import 'package:story_app/src/features/auth/presentation/screens/login_screen.dart';
 import 'package:story_app/src/features/auth/presentation/screens/register_screen.dart';
 import 'package:story_app/src/features/auth/presentation/screens/splash_screen.dart';
+import 'package:story_app/src/features/story/presentation/screens/add_story_screen.dart';
 import 'package:story_app/src/features/story/presentation/screens/story_detail_screen.dart';
 import 'package:story_app/src/features/story/presentation/screens/story_list_screen.dart';
 
@@ -47,6 +48,11 @@ class AppRouter {
       ),
       GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
       GoRoute(path: '/register', builder: (context, state) => RegisterScreen()),
+      GoRoute(
+        path: '/add-story',
+        name: 'add_story',
+        builder: (context, state) => const AddStoryScreen(),
+      ),
       GoRoute(
         path: '/home',
         builder: (context, state) => StoryListScreen(),

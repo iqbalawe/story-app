@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:story_app/src/core/network/dio_client.dart';
 import 'package:story_app/src/core/router/app_router.dart';
+import 'package:story_app/src/core/theme/app_theme.dart';
 import 'package:story_app/src/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:story_app/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:story_app/src/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:story_app/src/features/story/data/datasources/story_remote_datasource.dart';
 import 'package:story_app/src/features/story/data/repositories/story_repository_impl.dart';
+import 'package:story_app/src/features/story/presentation/blocs/add_story/add_story_bloc.dart';
 import 'package:story_app/src/features/story/presentation/blocs/detail/story_detail_bloc.dart';
 import 'package:story_app/src/features/story/presentation/blocs/story/story_bloc.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting('id_ID', null);
+
+  timeago.setLocaleMessages('id', timeago.IdMessages());
 
   final dioClient = DioClient();
   const storage = FlutterSecureStorage();
@@ -42,6 +50,7 @@ void main() {
           create: (context) => StoryBloc(storyRepository: storyRepository),
         ),
         BlocProvider(create: (context) => StoryDetailBloc(storyRepository)),
+        BlocProvider(create: (context) => AddStoryBloc(storyRepository)),
       ],
       child: MyApp(appRouter: appRouter),
     ),
@@ -57,6 +66,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Story App',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       routerConfig: appRouter.router,
     );
   }

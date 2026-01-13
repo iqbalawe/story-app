@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:story_app/src/features/story/data/datasources/story_remote_datasource.dart';
 import 'package:story_app/src/features/story/domain/entities/story.dart';
 import 'package:story_app/src/features/story/domain/repositories/story_repository.dart';
@@ -37,5 +39,15 @@ class StoryRepositoryImpl implements StoryRepository {
       lat: story.lat,
       lon: story.lon,
     );
+  }
+
+  @override
+  Future<String> addStory(
+    File file,
+    String description,
+    double? lat,
+    double? lon,
+  ) async {
+    return await remoteDatasource.addStory(file, description, lat, lon);
   }
 }
