@@ -1,0 +1,20 @@
+{
+  "loginTagline": "Log in to share your moment",
+  "registerTitle": "Create Account",
+  "registerTagline": "Sign up to share stories with your friends",
+  "registerName": "Name",
+  "email": "Email Address",
+  "password": "Password",
+  "authRegisterText": "Don't have an account yet?",
+  "authLoginText": "Already have an account?",
+  "titleLoginButton": "Login",
+  "titleRegisterButton": "Register",
+  "storyDescription": "Description",
+  "addStory": "Create Story",
+  "uploadStory": "Upload Story",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "settings": "Settings",
+  "language": "Language",
+  "logout": "Logout"
+}

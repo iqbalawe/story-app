@@ -24,7 +24,7 @@ class CustomErrorWidget extends StatelessWidget {
               color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(height: 24),
-            Text("Oops! Terjadi Kesalahan", textAlign: TextAlign.center),
+            Text('Oops! Terjadi Kesalahan', textAlign: TextAlign.center),
             const SizedBox(height: 12),
             Text(errorMessage, textAlign: TextAlign.center),
             const SizedBox(height: 32),
@@ -34,7 +34,7 @@ class CustomErrorWidget extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh),
-                label: const Text("Coba Lagi"),
+                label: const Text('Coba Lagi'),
               ),
             ),
           ],

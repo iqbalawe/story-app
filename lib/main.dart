@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:story_app/l10n/app_localizations.dart';
+import 'package:story_app/src/core/bloc/localization_bloc.dart';
 import 'package:story_app/src/core/network/dio_client.dart';
 import 'package:story_app/src/core/router/app_router.dart';
 import 'package:story_app/src/core/theme/app_theme.dart';
@@ -51,6 +54,7 @@ void main() async {
         ),
         BlocProvider(create: (context) => StoryDetailBloc(storyRepository)),
         BlocProvider(create: (context) => AddStoryBloc(storyRepository)),
+        BlocProvider(create: (context) => LocalizationBloc()),
       ],
       child: MyApp(appRouter: appRouter),
     ),
@@ -64,13 +68,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Story App',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      routerConfig: appRouter.router,
+    return BlocBuilder<LocalizationBloc, LocalizationState>(
+      builder: (context, state) {
+        return MaterialApp.router(
+          title: 'Story App',
+          locale: state.locale,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en'), Locale('id')],
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
+          routerConfig: appRouter.router,
+        );
+      },
     );
   }
 }

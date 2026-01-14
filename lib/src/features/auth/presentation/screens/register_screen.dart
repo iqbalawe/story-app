@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/l10n/app_localizations.dart';
+import 'package:story_app/src/core/utils/my_show_snackbar.dart';
+import 'package:story_app/src/core/widgets/app_loading.dart';
 import 'package:story_app/src/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -37,19 +40,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthRegisterSuccess) {
-            final message = state.message;
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message), backgroundColor: Colors.green),
+            myShowSnackbar(
+              context: context,
+              text: state.message,
+              backgroundColor: Colors.green,
             );
             context.go('/login');
           } else if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-              ),
-            );
+            myShowSnackbar(context: context, text: state.message);
           }
         },
         builder: (context, state) {
@@ -59,27 +57,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Create account',
+                  AppLocalizations.of(context)!.registerTitle,
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Sign up to share stories with your friends',
+                  AppLocalizations.of(context)!.registerTagline,
                   style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 48),
                 TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.registerName,
                     suffixIcon: Icon(Icons.person_outline),
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
                     suffixIcon: Icon(Icons.mail_outline),
                   ),
                 ),
@@ -87,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: AppLocalizations.of(context)!.password,
                     suffixIcon: IconButton(
                       onPressed: _passwordVisibilityHandler,
                       icon: Icon(
@@ -97,6 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
+                  obscureText: _isVisible,
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -112,25 +112,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           );
                         },
                   child: state is AuthLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text('Register'),
+                      ? AppLoading()
+                      : Text(AppLocalizations.of(context)!.titleRegisterButton),
                 ),
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Sudah punya akun? ',
+                      '${AppLocalizations.of(context)!.authLoginText} ',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     GestureDetector(
                       onTap: () => context.go('/login'),
                       child: Text(
-                        'Masuk',
+                        AppLocalizations.of(context)!.titleLoginButton,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),

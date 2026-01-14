@@ -23,6 +23,12 @@ class AppTheme {
       onError: Colors.white,
     ),
     scaffoldBackgroundColor: const Color(0xFFFFFBFE),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF0A7AFF),
+      foregroundColor: Color(0xFFFFFFFF),
+      elevation: 0,
+      centerTitle: true,
+    ),
     textTheme: _buildTextTheme(ThemeData.light().textTheme),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -75,9 +81,15 @@ class AppTheme {
       onSurface: Color(0xFFE6E1E5),
       outline: Color(0xFF938F99),
       error: Color(0xFFCF6679),
-      onError: Colors.black,
+      onError: Colors.white,
     ),
     scaffoldBackgroundColor: const Color(0xFF1C1B1F),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF1C1B1F),
+      foregroundColor: Color(0xFFE6E1E5),
+      elevation: 0,
+      centerTitle: true,
+    ),
     textTheme: _buildTextTheme(ThemeData.dark().textTheme),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,

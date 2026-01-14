@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/l10n/app_localizations.dart';
+import 'package:story_app/src/core/utils/my_show_snackbar.dart';
+import 'package:story_app/src/core/widgets/app_loading.dart';
 import 'package:story_app/src/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -35,12 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-              ),
-            );
+            myShowSnackbar(context: context, text: state.message);
           }
         },
         builder: (context, state) {
@@ -55,14 +53,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Log in to sharing your moments',
+                  AppLocalizations.of(context)!.loginTagline,
                   style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
                 TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: Icon(Icons.email_outlined),
                   ),
                 ),
@@ -70,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       onPressed: _passwordVisibilityHandler,
@@ -96,25 +95,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                   child: state is AuthLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text('Masuk'),
+                      ? const AppLoading()
+                      : Text(AppLocalizations.of(context)!.titleLoginButton),
                 ),
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Belum punya akun? ',
+                      '${AppLocalizations.of(context)!.authRegisterText} ',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     GestureDetector(
                       onTap: () => context.go('/register'),
                       child: Text(
-                        'Daftar',
+                        AppLocalizations.of(context)!.titleRegisterButton,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),

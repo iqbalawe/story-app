@@ -1,0 +1,20 @@
+{
+  "loginTagline": "Masuk untuk membagikan momen Anda",
+  "registerTitle": "Buat Akun",
+  "registerTagline": "Daftar untuk membagikan cerita dengan teman-temanmu",
+  "registerName": "Nama",
+  "email": "Alamat Surel",
+  "password": "Kata Sandi",
+  "authRegisterText": "Belum punya akun?",
+  "authLoginText": "Sudah punya akun?",
+  "titleLoginButton": "Masuk",
+  "titleRegisterButton": "Daftar",
+  "storyDescription": "Deskripsi",
+  "addStory": "Buat Cerita",
+  "uploadStory": "Unggah Cerita",
+  "camera": "Kamera",
+  "gallery": "Galeri",
+  "settings": "Pengaturan",
+  "language": "Bahasa",
+  "logout": "Keluar"
+}
