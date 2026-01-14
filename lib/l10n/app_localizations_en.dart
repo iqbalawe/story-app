@@ -54,11 +54,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gallery => 'Gallery';
 
   @override
-  String get settings => 'Settings';
+  String get postDetailTitle => 'Post Detail';
 
   @override
-  String get language => 'Language';
+  String get createdAt => 'Created at';
 
   @override
-  String get logout => 'Logout';
+  String get addStoryTitle => 'Create Story';
+
+  @override
+  String get addStoryDescription => 'Share your story...';
+
+  @override
+  String get errorNoInternet =>
+      'No internet connection. Please check your network.';
+
+  @override
+  String get errorTimeout =>
+      'Connection timeout. Server is taking too long to respond.';
+
+  @override
+  String get errorServerError =>
+      'Server encountered a problem. Please try again later.';
+
+  @override
+  String get errorUnknown => 'An unexpected error occurred.';
+
+  @override
+  String get refreshButtonText => 'Try Again';
 }

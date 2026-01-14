@@ -188,23 +188,59 @@ abstract class AppLocalizations {
   /// **'Gallery'**
   String get gallery;
 
-  /// No description provided for @settings.
+  /// No description provided for @postDetailTitle.
   ///
   /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
+  /// **'Post Detail'**
+  String get postDetailTitle;
 
-  /// No description provided for @language.
+  /// No description provided for @createdAt.
   ///
   /// In en, this message translates to:
-  /// **'Language'**
-  String get language;
+  /// **'Created at'**
+  String get createdAt;
 
-  /// No description provided for @logout.
+  /// No description provided for @addStoryTitle.
   ///
   /// In en, this message translates to:
-  /// **'Logout'**
-  String get logout;
+  /// **'Create Story'**
+  String get addStoryTitle;
+
+  /// No description provided for @addStoryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your story...'**
+  String get addStoryDescription;
+
+  /// No description provided for @errorNoInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Please check your network.'**
+  String get errorNoInternet;
+
+  /// No description provided for @errorTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timeout. Server is taking too long to respond.'**
+  String get errorTimeout;
+
+  /// No description provided for @errorServerError.
+  ///
+  /// In en, this message translates to:
+  /// **'Server encountered a problem. Please try again later.'**
+  String get errorServerError;
+
+  /// No description provided for @errorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred.'**
+  String get errorUnknown;
+
+  /// No description provided for @refreshButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get refreshButtonText;
 }
 
 class _AppLocalizationsDelegate

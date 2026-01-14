@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:story_app/src/core/network/dio_client.dart';
+import 'package:story_app/src/core/utils/exception_handler.dart';
 import 'package:story_app/src/features/auth/data/models/login_response_model.dart';
 import 'package:story_app/src/features/auth/data/models/register_response_model.dart';
 
@@ -36,15 +36,8 @@ class AuthRemoteDatasourceImpl extends AuthRemoteDatasource {
       } else {
         throw Exception(loginResponse.message);
       }
-    } on DioException catch (e) {
-      final errorResponse = e.response?.data;
-      if (errorResponse != null) {
-        final message = errorResponse['message'] ?? e.message;
-        throw Exception(message);
-      }
-      throw Exception('Login Failed: ${e.message}');
     } catch (e) {
-      throw Exception('Login Failed: $e');
+      throw handleException(e);
     }
   }
 
@@ -63,14 +56,8 @@ class AuthRemoteDatasourceImpl extends AuthRemoteDatasource {
       } else {
         throw Exception(registerResponse.message);
       }
-    } on DioException catch (e) {
-      if (e.response != null) {
-        final message = e.response?.data['message'] ?? e.message;
-        throw Exception(message);
-      }
-      throw Exception('Register failed: ${e.message}');
     } catch (e) {
-      throw Exception('Register failed: $e');
+      throw handleException(e);
     }
   }
 

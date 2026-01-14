@@ -5,6 +5,8 @@ class EmptyStoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -14,13 +16,13 @@ class EmptyStoriesWidget extends StatelessWidget {
             Icon(
               Icons.photo_library_outlined,
               size: 80,
-              color: Theme.of(context).colorScheme.primary,
+              color: theme.colorScheme.primary,
             ),
             const SizedBox(height: 24),
             Text(
               'Belum ada momen untuk diceritakan',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: theme.colorScheme.onSurface,
               ),
               textAlign: TextAlign.center,
             ),

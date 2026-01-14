@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:story_app/src/core/network/dio_client.dart';
+import 'package:story_app/src/core/utils/exception_handler.dart';
 import 'package:story_app/src/features/story/data/models/add_story_response_model.dart';
 import 'package:story_app/src/features/story/data/models/story_detail_response_model.dart';
 import 'package:story_app/src/features/story/data/models/story_model.dart';
@@ -45,19 +46,8 @@ class StoryRemoteDatasourceImpl extends StoryRemoteDatasource {
       } else {
         throw Exception(storyResponse.message);
       }
-    } on DioException catch (e) {
-      if (e.response != null) {
-        throw Exception(e.response?.data['message'] ?? e.message);
-      } else if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout ||
-          e.type == DioExceptionType.sendTimeout) {
-        throw Exception('Connection Timeout');
-      } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('SocketException: Failed host lookup');
-      }
-      throw Exception(e.message ?? "Something went wrong");
     } catch (e) {
-      throw Exception(e.toString());
+      throw handleException(e);
     }
   }
 
@@ -79,19 +69,8 @@ class StoryRemoteDatasourceImpl extends StoryRemoteDatasource {
       } else {
         throw Exception(detailResponse.message);
       }
-    } on DioException catch (e) {
-      if (e.response != null) {
-        throw Exception(e.response?.data['message'] ?? e.message);
-      } else if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout ||
-          e.type == DioExceptionType.sendTimeout) {
-        throw Exception('Connection Timeout');
-      } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('SocketException: Failed host lookup');
-      }
-      throw Exception(e.message ?? "Something went wrong");
     } catch (e) {
-      throw Exception(e.toString());
+      throw handleException(e);
     }
   }
 
@@ -134,19 +113,8 @@ class StoryRemoteDatasourceImpl extends StoryRemoteDatasource {
       } else {
         throw Exception(responseModel.message);
       }
-    } on DioException catch (e) {
-      if (e.response != null) {
-        throw Exception(e.response?.data['message'] ?? e.message);
-      } else if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout ||
-          e.type == DioExceptionType.sendTimeout) {
-        throw Exception('Connection Timeout');
-      } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('SocketException: Failed host lookup');
-      }
-      throw Exception(e.message ?? "Something went wrong");
     } catch (e) {
-      throw Exception(e.toString());
+      throw handleException(e);
     }
   }
 }

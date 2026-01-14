@@ -5,15 +5,17 @@ void myShowSnackbar({
   required String text,
   Color? backgroundColor,
 }) {
+  final theme = Theme.of(context);
+
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
         text,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: Theme.of(context).colorScheme.onError,
+        style: theme.textTheme.labelLarge?.copyWith(
+          color: theme.colorScheme.onError,
         ),
       ),
-      backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.error,
+      backgroundColor: backgroundColor ?? theme.colorScheme.error,
     ),
   );
 }

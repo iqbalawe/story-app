@@ -5,7 +5,7 @@ import 'package:story_app/src/core/bloc/localization_bloc.dart';
 import 'package:story_app/src/core/utils/error_mapper.dart';
 import 'package:story_app/src/core/widgets/app_loading.dart';
 import 'package:story_app/src/core/widgets/custom_error_widget.dart';
-import 'package:story_app/src/features/auth/presentation/blocs/bloc/auth_bloc.dart';
+import 'package:story_app/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:story_app/src/features/story/presentation/blocs/story/story_bloc.dart';
 import 'package:story_app/src/features/story/presentation/widgets/empty_stories_widget.dart';
 import 'package:story_app/src/features/story/presentation/widgets/item_card.dart';
@@ -77,7 +77,7 @@ class _StoryListScreenState extends State<StoryListScreen> {
               final message = state.message;
 
               return CustomErrorWidget(
-                errorMessage: ErrorMapper.getErrorMessage(message),
+                errorMessage: ErrorMapper.getErrorMessage(message, context),
                 onRetry: () => context.read<StoryBloc>().add(FetchStories()),
               );
             }

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/l10n/app_localizations.dart';
+import 'package:story_app/src/core/utils/error_mapper.dart';
 import 'package:story_app/src/core/utils/my_show_snackbar.dart';
 import 'package:story_app/src/core/widgets/app_loading.dart';
-import 'package:story_app/src/features/auth/presentation/blocs/bloc/auth_bloc.dart';
+import 'package:story_app/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:story_app/src/features/auth/presentation/widgets/auth_footer.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -47,7 +49,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
             context.go('/login');
           } else if (state is AuthFailure) {
-            myShowSnackbar(context: context, text: state.message);
+            final message = ErrorMapper.getErrorMessage(state.message, context);
+            myShowSnackbar(context: context, text: message);
           }
         },
         builder: (context, state) {
@@ -77,6 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 16),
                 TextField(
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.email,
                     suffixIcon: Icon(Icons.mail_outline),
@@ -116,23 +120,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       : Text(AppLocalizations.of(context)!.titleRegisterButton),
                 ),
                 const SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.authLoginText} ',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    GestureDetector(
-                      onTap: () => context.go('/login'),
-                      child: Text(
-                        AppLocalizations.of(context)!.titleLoginButton,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
-                  ],
+                AuthFooter(
+                  authText: '${AppLocalizations.of(context)!.authLoginText} ',
+                  navigationText: AppLocalizations.of(
+                    context,
+                  )!.titleLoginButton,
+                  onTap: () => context.go('/login'),
                 ),
               ],
             ),

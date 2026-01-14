@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:story_app/l10n/app_localizations.dart';
+import 'package:story_app/src/core/utils/my_show_snackbar.dart';
+import 'package:story_app/src/core/widgets/app_loading.dart';
 import 'package:story_app/src/features/story/presentation/blocs/add_story/add_story_bloc.dart';
 import 'package:story_app/src/features/story/presentation/blocs/story/story_bloc.dart';
 import 'package:story_app/src/features/story/presentation/widgets/image_upload_container.dart';
@@ -54,11 +57,14 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final appBarColor = theme.appBarTheme.foregroundColor;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Buat Cerita',
-          style: Theme.of(context).textTheme.titleLarge,
+          AppLocalizations.of(context)!.addStoryTitle,
+          style: theme.textTheme.titleLarge?.copyWith(color: appBarColor),
         ),
         centerTitle: true,
         actions: [
@@ -67,21 +73,13 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
               if (state is AddStoryLoading) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 16.0),
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
+                  child: AppLoading(),
                 );
               }
 
               return IconButton(
                 onPressed: state is AddStoryLoading ? null : _uploadStory,
                 icon: Icon(Icons.check_outlined),
-                tooltip: 'Upload Story',
               );
             },
           ),
@@ -90,21 +88,15 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
       body: BlocListener<AddStoryBloc, AddStoryState>(
         listener: (context, state) {
           if (state is AddStorySuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.green,
-              ),
+            myShowSnackbar(
+              context: context,
+              text: state.message,
+              backgroundColor: Colors.green,
             );
             context.read<StoryBloc>().add(FetchStories());
             context.pop();
           } else if (state is AddStoryFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-              ),
-            );
+            myShowSnackbar(context: context, text: state.message);
           }
         },
         child: SingleChildScrollView(
@@ -123,12 +115,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                 maxLines: null,
                 minLines: 4,
                 keyboardType: TextInputType.multiline,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onSurface,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Bagikan ceritamu...',
-                  hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  hintText: AppLocalizations.of(context)!.addStoryDescription,
+                  hintStyle: theme.textTheme.bodyLarge?.copyWith(
                     color: Theme.of(
                       context,
                     ).colorScheme.outline.withValues(alpha: 0.5),

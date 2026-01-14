@@ -55,11 +55,32 @@ class AppLocalizationsId extends AppLocalizations {
   String get gallery => 'Galeri';
 
   @override
-  String get settings => 'Pengaturan';
+  String get postDetailTitle => 'Rincian Postingan';
 
   @override
-  String get language => 'Bahasa';
+  String get createdAt => 'Dibuat pada';
 
   @override
-  String get logout => 'Keluar';
+  String get addStoryTitle => 'Buat Cerita';
+
+  @override
+  String get addStoryDescription => 'Bagikan kisahmu...';
+
+  @override
+  String get errorNoInternet =>
+      'Tidak ada koneksi internet. Pastikan wifi atau data seluler aktif.';
+
+  @override
+  String get errorTimeout =>
+      'Koneksi internet bermasalah atau server lambat merespon.';
+
+  @override
+  String get errorServerError =>
+      'Terjadi masalah pada server kami. Silakan coba beberapa saat lagi.';
+
+  @override
+  String get errorUnknown => 'Terjadi kesalahan yang tidak terduga.';
+
+  @override
+  String get refreshButtonText => 'Coba Lagi';
 }

@@ -10,8 +10,10 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
-      color: Theme.of(context).colorScheme.surface,
+      color: theme.colorScheme.surface,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,21 +27,21 @@ class ItemCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  story.name,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+                Text(story.name, style: theme.textTheme.headlineMedium),
                 Text(
                   story.description,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: theme.textTheme.titleMedium,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  DateFormatter.formatTimeAgo(story.createdAt.toString()),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
+                  DateFormatter.formatTimeAgo(
+                    '${story.createdAt}',
+                    Localizations.localeOf(context).languageCode,
+                  ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.secondary,
                   ),
                 ),
               ],

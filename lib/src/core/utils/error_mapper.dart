@@ -1,33 +1,36 @@
-class ErrorMapper {
-  static String getErrorMessage(String error) {
-    final lowerError = error.toLowerCase();
+import 'package:flutter/material.dart';
+import 'package:story_app/l10n/app_localizations.dart';
 
-    if (lowerError.contains('connection took longer') ||
-        lowerError.contains('timeout') ||
-        lowerError.contains('deadline exceeded')) {
-      return 'Koneksi internet bermasalah atau server lambat merespon. Silakan periksa jaringanmu.';
-    }
+class ErrorMapper {
+  static String getErrorMessage(String error, BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
+    String lowerError = error.toLowerCase();
+
+    lowerError = lowerError.replaceAll('exception:', '');
+    lowerError = lowerError.replaceAll('error:', '');
+    lowerError = lowerError.replaceAll('dioexception:', '');
+    lowerError = lowerError.trim();
 
     if (lowerError.contains('socketexception') ||
-        lowerError.contains('network is unreachable') ||
-        lowerError.contains('connection errored') ||
         lowerError.contains('failed host lookup') ||
-        lowerError.contains('connection refused')) {
-      return 'Tidak ada koneksi internet. Pastikan wifi atau data seluler aktif.';
+        lowerError.contains('network is unreachable') ||
+        lowerError.contains('connection refused') ||
+        lowerError.contains('connection error')) {
+      return loc.errorNoInternet;
     }
 
-    if (lowerError.contains('401') || lowerError.contains('unauthorized')) {
-      return 'Sesi Anda telah berakhir. Silakan login kembali.';
+    if (lowerError.contains('timeout') ||
+        lowerError.contains('deadline exceeded') ||
+        lowerError.contains('connection took longer')) {
+      return loc.errorTimeout;
     }
 
-    if (lowerError.contains('404')) {
-      return 'Data tidak ditemukan.';
+    if (lowerError.contains('500') ||
+        lowerError.contains('internal server error')) {
+      return loc.errorServerError;
     }
 
-    if (lowerError.contains('500') || lowerError.contains('server error')) {
-      return 'Terjadi masalah pada server kami. Silakan coba beberapa saat lagi.';
-    }
-
-    return 'Terjadi kesalahan: $error';
+    return error.replaceAll('Exception: ', '').replaceAll('Error: ', '');
   }
 }

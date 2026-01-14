@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:story_app/l10n/app_localizations.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   const CustomErrorWidget({
@@ -12,6 +13,8 @@ class CustomErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -21,12 +24,16 @@ class CustomErrorWidget extends StatelessWidget {
             Icon(
               Icons.wifi_off_outlined,
               size: 80,
-              color: Theme.of(context).colorScheme.error,
+              color: theme.colorScheme.error,
             ),
             const SizedBox(height: 24),
-            Text('Oops! Terjadi Kesalahan', textAlign: TextAlign.center),
-            const SizedBox(height: 12),
-            Text(errorMessage, textAlign: TextAlign.center),
+            Text(
+              errorMessage,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
@@ -34,7 +41,12 @@ class CustomErrorWidget extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh),
-                label: const Text('Coba Lagi'),
+                label: Text(
+                  AppLocalizations.of(context)!.refreshButtonText,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                ),
               ),
             ),
           ],

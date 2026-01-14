@@ -14,7 +14,13 @@
   "uploadStory": "Unggah Cerita",
   "camera": "Kamera",
   "gallery": "Galeri",
-  "settings": "Pengaturan",
-  "language": "Bahasa",
-  "logout": "Keluar"
+  "postDetailTitle": "Rincian Postingan",
+  "createdAt": "Dibuat pada",
+  "addStoryTitle": "Buat Cerita",
+  "addStoryDescription": "Bagikan kisahmu...",
+  "errorNoInternet": "Tidak ada koneksi internet. Pastikan wifi atau data seluler aktif.",
+  "errorTimeout": "Koneksi internet bermasalah atau server lambat merespon.",
+  "errorServerError": "Terjadi masalah pada server kami. Silakan coba beberapa saat lagi.",
+  "errorUnknown": "Terjadi kesalahan yang tidak terduga.",
+  "refreshButtonText": "Coba Lagi"
 }

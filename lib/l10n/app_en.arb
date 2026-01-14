@@ -14,7 +14,13 @@
   "uploadStory": "Upload Story",
   "camera": "Camera",
   "gallery": "Gallery",
-  "settings": "Settings",
-  "language": "Language",
-  "logout": "Logout"
+  "postDetailTitle": "Post Detail",
+  "createdAt": "Created at",
+  "addStoryTitle": "Create Story",
+  "addStoryDescription": "Share your story...",
+  "errorNoInternet": "No internet connection. Please check your network.",
+  "errorTimeout": "Connection timeout. Server is taking too long to respond.",
+  "errorServerError": "Server encountered a problem. Please try again later.",
+  "errorUnknown": "An unexpected error occurred.",
+  "refreshButtonText": "Try Again"
 }

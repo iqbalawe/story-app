@@ -17,11 +17,13 @@ class ImageUploadContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       height: 300,
       width: double.infinity,
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.outline),
+        border: Border.all(color: theme.colorScheme.outline),
         borderRadius: BorderRadius.circular(16),
       ),
       child: ClipRRect(
@@ -32,9 +34,7 @@ class ImageUploadContainer extends StatelessWidget {
               child: imageFile != null
                   ? Image.file(imageFile!, fit: BoxFit.cover)
                   : Container(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.surface.withValues(alpha: 0.5),
+                      color: theme.colorScheme.surface.withValues(alpha: 0.5),
                     ),
             ),
             if (imageFile == null)
@@ -45,9 +45,7 @@ class ImageUploadContainer extends StatelessWidget {
                     Icon(
                       Icons.image_outlined,
                       size: 40,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.5),
+                      color: theme.colorScheme.primary.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: 16),
                     Row(

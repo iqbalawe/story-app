@@ -50,8 +50,8 @@ class AppTheme {
         borderRadius: BorderRadius.circular(_radius),
         borderSide: const BorderSide(color: Colors.red, width: 2.0),
       ),
-      labelStyle: const TextStyle(color: Color(0xFF74777F)),
-      floatingLabelStyle: const TextStyle(color: Color(0xFF0A7AFF)),
+      labelStyle: GoogleFonts.inter(color: const Color(0xFF74777F)),
+      floatingLabelStyle: GoogleFonts.inter(color: const Color(0xFF0A7AFF)),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -111,8 +111,8 @@ class AppTheme {
         borderRadius: BorderRadius.circular(_radius),
         borderSide: const BorderSide(color: Color(0xFFCF6679), width: 2.0),
       ),
-      labelStyle: const TextStyle(color: Color(0xFF938F99)),
-      floatingLabelStyle: const TextStyle(color: Color(0xFF0A7AFF)),
+      labelStyle: GoogleFonts.inter(color: const Color(0xFF938F99)),
+      floatingLabelStyle: GoogleFonts.inter(color: const Color(0xFF0A7AFF)),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

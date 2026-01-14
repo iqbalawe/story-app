@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/l10n/app_localizations.dart';
+import 'package:story_app/src/core/utils/error_mapper.dart';
 import 'package:story_app/src/core/utils/my_show_snackbar.dart';
 import 'package:story_app/src/core/widgets/app_loading.dart';
-import 'package:story_app/src/features/auth/presentation/blocs/bloc/auth_bloc.dart';
+import 'package:story_app/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:story_app/src/features/auth/presentation/widgets/auth_footer.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -34,11 +36,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
-            myShowSnackbar(context: context, text: state.message);
+            final message = ErrorMapper.getErrorMessage(state.message, context);
+            myShowSnackbar(context: context, text: message);
           }
         },
         builder: (context, state) {
@@ -47,19 +51,17 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Story App',
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
+                Text('Story App', style: theme.textTheme.displayLarge),
                 const SizedBox(height: 16),
                 Text(
                   AppLocalizations.of(context)!.loginTagline,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: theme.textTheme.titleLarge,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
                 TextField(
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: Icon(Icons.email_outlined),
@@ -96,26 +98,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                   child: state is AuthLoading
                       ? const AppLoading()
-                      : Text(AppLocalizations.of(context)!.titleLoginButton),
+                      : Text(
+                          AppLocalizations.of(context)!.titleLoginButton,
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: theme.colorScheme.onPrimary,
+                          ),
+                        ),
                 ),
                 const SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
+                AuthFooter(
+                  authText:
                       '${AppLocalizations.of(context)!.authRegisterText} ',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    GestureDetector(
-                      onTap: () => context.go('/register'),
-                      child: Text(
-                        AppLocalizations.of(context)!.titleRegisterButton,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
-                  ],
+                  navigationText: AppLocalizations.of(
+                    context,
+                  )!.titleRegisterButton,
+                  onTap: () => context.go('/register'),
                 ),
               ],
             ),
