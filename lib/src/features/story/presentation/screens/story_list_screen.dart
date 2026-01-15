@@ -5,10 +5,10 @@ import 'package:story_app/src/core/bloc/localization_bloc.dart';
 import 'package:story_app/src/core/utils/error_mapper.dart';
 import 'package:story_app/src/core/widgets/app_loading.dart';
 import 'package:story_app/src/core/widgets/custom_error_widget.dart';
-import 'package:story_app/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:story_app/src/features/story/presentation/blocs/story/story_bloc.dart';
 import 'package:story_app/src/features/story/presentation/widgets/empty_stories_widget.dart';
 import 'package:story_app/src/features/story/presentation/widgets/item_card.dart';
+import 'package:story_app/src/features/story/presentation/widgets/logout_dialog_widget.dart';
 import 'package:story_app/src/features/story/presentation/widgets/my_popup_menu_button.dart';
 
 class StoryListScreen extends StatefulWidget {
@@ -44,9 +44,12 @@ class _StoryListScreenState extends State<StoryListScreen> {
             ),
           ),
           IconButton(
-            onPressed: () =>
-                context.read<AuthBloc>().add(AuthLogoutRequested()),
-            icon: Icon(Icons.logout_outlined),
+            icon: const Icon(Icons.logout_outlined),
+            onPressed: () => showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => const LogoutDialogWidget(),
+            ),
           ),
         ],
       ),
@@ -55,19 +58,19 @@ class _StoryListScreenState extends State<StoryListScreen> {
         child: BlocBuilder<StoryBloc, StoryState>(
           builder: (context, state) {
             if (state is StoryLoading) {
-              return Center(child: AppLoading());
+              return const Center(child: AppLoading());
             } else if (state is StoryLoaded) {
               final stories = state.stories;
 
               if (stories.isEmpty) {
-                return EmptyStoriesWidget();
+                return const EmptyStoriesWidget();
               }
 
               return ListView.builder(
                 itemCount: stories.length,
                 itemBuilder: (context, index) {
                   final story = stories[index];
-                  return GestureDetector(
+                  return InkWell(
                     onTap: () => context.go('/home/stories/${story.id}'),
                     child: ItemCard(story: story),
                   );
@@ -87,7 +90,7 @@ class _StoryListScreenState extends State<StoryListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/add-story'),
-        child: Icon(Icons.add_a_photo_outlined),
+        child: const Icon(Icons.add_a_photo_outlined),
       ),
     );
   }

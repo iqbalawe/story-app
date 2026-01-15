@@ -37,87 +37,106 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Scaffold(
-      body: BlocConsumer<AuthBloc, AuthState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
             final message = ErrorMapper.getErrorMessage(state.message, context);
             myShowSnackbar(context: context, text: message);
           }
         },
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Story App', style: theme.textTheme.displayLarge),
-                const SizedBox(height: 16),
-                Text(
-                  AppLocalizations.of(context)!.loginTagline,
-                  style: theme.textTheme.titleLarge,
-                  textAlign: TextAlign.center,
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 24.0,
                 ),
-                const SizedBox(height: 24),
-                TextField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.email,
-                    prefixIcon: Icon(Icons.email_outlined),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.password,
-                    prefixIcon: Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      onPressed: _passwordVisibilityHandler,
-                      icon: Icon(
-                        _isVisible
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Spacer(),
+                      Text(
+                        'Story App',
+                        style: theme.textTheme.displayLarge,
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
-                  obscureText: _isVisible,
-                ),
-                SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: state is AuthLoading
-                      ? null
-                      : () {
-                          context.read<AuthBloc>().add(
-                            AuthLoginRequested(
-                              _emailController.text,
-                              _passwordController.text,
+                      const SizedBox(height: 16),
+                      Text(
+                        AppLocalizations.of(context)!.loginTagline,
+                        style: theme.textTheme.titleLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 48),
+                      TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.email,
+                          prefixIcon: const Icon(Icons.email_outlined),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.password,
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: IconButton(
+                            onPressed: _passwordVisibilityHandler,
+                            icon: Icon(
+                              _isVisible
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
                             ),
-                          );
-                        },
-                  child: state is AuthLoading
-                      ? const AppLoading()
-                      : Text(
-                          AppLocalizations.of(context)!.titleLoginButton,
-                          style: theme.textTheme.labelLarge?.copyWith(
-                            color: theme.colorScheme.onPrimary,
                           ),
                         ),
+                        obscureText: _isVisible,
+                      ),
+                      const SizedBox(height: 24),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) => ElevatedButton(
+                          onPressed: state is AuthLoading
+                              ? null
+                              : () {
+                                  context.read<AuthBloc>().add(
+                                    AuthLoginRequested(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    ),
+                                  );
+                                },
+                          child: state is AuthLoading
+                              ? const AppLoading()
+                              : Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.titleLoginButton,
+                                ),
+                        ),
+                      ),
+                      const Spacer(),
+                      AuthFooter(
+                        authText:
+                            '${AppLocalizations.of(context)!.authRegisterText} ',
+                        navigationText: AppLocalizations.of(
+                          context,
+                        )!.titleRegisterButton,
+                        onTap: () => context.go('/register'),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 40),
-                AuthFooter(
-                  authText:
-                      '${AppLocalizations.of(context)!.authRegisterText} ',
-                  navigationText: AppLocalizations.of(
-                    context,
-                  )!.titleRegisterButton,
-                  onTap: () => context.go('/register'),
-                ),
-              ],
+              ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

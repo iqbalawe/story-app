@@ -83,4 +83,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get refreshButtonText => 'Coba Lagi';
+
+  @override
+  String get logoutDialogText => 'Apakah anda yakin ingin keluar aplikasi?';
+
+  @override
+  String get yes => 'Ya';
+
+  @override
+  String get no => 'Tidak';
 }

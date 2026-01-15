@@ -5,7 +5,7 @@ class AppLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       height: 20,
       width: 20,
       child: CircularProgressIndicator(strokeWidth: 2),

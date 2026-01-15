@@ -6,7 +6,7 @@ class LocalizationState extends Equatable {
   final Locale locale;
 
   factory LocalizationState.initial() {
-    return LocalizationState(Locale('id'));
+    return const LocalizationState(Locale('id'));
   }
 
   @override

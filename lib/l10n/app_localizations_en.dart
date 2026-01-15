@@ -82,4 +82,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get refreshButtonText => 'Try Again';
+
+  @override
+  String get logoutDialogText =>
+      'Are you sure you want to exit the application?';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
 }

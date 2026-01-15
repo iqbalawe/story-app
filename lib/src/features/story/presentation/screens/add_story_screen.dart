@@ -71,15 +71,15 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
           BlocBuilder<AddStoryBloc, AddStoryState>(
             builder: (context, state) {
               if (state is AddStoryLoading) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
+                return const Padding(
+                  padding: EdgeInsets.only(right: 16.0),
                   child: AppLoading(),
                 );
               }
 
               return IconButton(
                 onPressed: state is AddStoryLoading ? null : _uploadStory,
-                icon: Icon(Icons.check_outlined),
+                icon: const Icon(Icons.check_outlined),
               );
             },
           ),

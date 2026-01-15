@@ -57,7 +57,10 @@ void main() async {
         ),
         BlocProvider(create: (context) => StoryDetailBloc(storyRepository)),
         BlocProvider(create: (context) => AddStoryBloc(storyRepository)),
-        BlocProvider(create: (context) => LocalizationBloc()),
+        BlocProvider(
+          create: (context) =>
+              LocalizationBloc(storage: storage)..add(LoadSavedLanguage()),
+        ),
       ],
       child: MyApp(appRouter: appRouter),
     ),

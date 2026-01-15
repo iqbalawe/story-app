@@ -37,101 +37,122 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthRegisterSuccess) {
-            myShowSnackbar(
-              context: context,
-              text: state.message,
-              backgroundColor: Colors.green,
-            );
-            context.go('/login');
-          } else if (state is AuthFailure) {
-            final message = ErrorMapper.getErrorMessage(state.message, context);
-            myShowSnackbar(context: context, text: message);
-          }
-        },
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.registerTitle,
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  AppLocalizations.of(context)!.registerTagline,
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 48),
-                TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.registerName,
-                    suffixIcon: Icon(Icons.person_outline),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.email,
-                    suffixIcon: Icon(Icons.mail_outline),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.password,
-                    suffixIcon: IconButton(
-                      onPressed: _passwordVisibilityHandler,
-                      icon: Icon(
-                        _isVisible
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
-                      ),
-                    ),
-                  ),
-                  obscureText: _isVisible,
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: state is AuthLoading
-                      ? null
-                      : () {
-                          context.read<AuthBloc>().add(
-                            AuthRegisterRequested(
-                              _nameController.text,
-                              _emailController.text,
-                              _passwordController.text,
-                            ),
-                          );
-                        },
-                  child: state is AuthLoading
-                      ? AppLoading()
-                      : Text(AppLocalizations.of(context)!.titleRegisterButton),
-                ),
-                const SizedBox(height: 40),
-                AuthFooter(
-                  authText: '${AppLocalizations.of(context)!.authLoginText} ',
-                  navigationText: AppLocalizations.of(
-                    context,
-                  )!.titleLoginButton,
-                  onTap: () => context.go('/login'),
-                ),
-              ],
-            ),
+  Widget build(BuildContext context) => Scaffold(
+    body: BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthRegisterSuccess) {
+          myShowSnackbar(
+            context: context,
+            text: state.message,
+            backgroundColor: Colors.green,
           );
-        },
-      ),
-    );
-  }
+          context.go('/login');
+        } else if (state is AuthFailure) {
+          final message = ErrorMapper.getErrorMessage(state.message, context);
+          myShowSnackbar(context: context, text: message);
+        }
+      },
+      builder: (context, state) {
+        final textTheme = Theme.of(context).textTheme;
+
+        return LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 24.0,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Spacer(),
+                      Text(
+                        AppLocalizations.of(context)!.registerTitle,
+                        style: textTheme.displayLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        AppLocalizations.of(context)!.registerTagline,
+                        style: textTheme.titleLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 48),
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.registerName,
+                          suffixIcon: const Icon(Icons.person_outline),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.email,
+                          suffixIcon: const Icon(Icons.mail_outline),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.password,
+                          suffixIcon: IconButton(
+                            onPressed: _passwordVisibilityHandler,
+                            icon: Icon(
+                              _isVisible
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                            ),
+                          ),
+                        ),
+                        obscureText: _isVisible,
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        onPressed: state is AuthLoading
+                            ? null
+                            : () {
+                                context.read<AuthBloc>().add(
+                                  AuthRegisterRequested(
+                                    _nameController.text,
+                                    _emailController.text,
+                                    _passwordController.text,
+                                  ),
+                                );
+                              },
+                        child: state is AuthLoading
+                            ? const AppLoading()
+                            : Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.titleRegisterButton,
+                              ),
+                      ),
+                      const Spacer(),
+                      AuthFooter(
+                        authText:
+                            '${AppLocalizations.of(context)!.authLoginText} ',
+                        navigationText: AppLocalizations.of(
+                          context,
+                        )!.titleLoginButton,
+                        onTap: () => context.go('/login'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }

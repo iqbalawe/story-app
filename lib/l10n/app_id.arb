@@ -22,5 +22,8 @@
   "errorTimeout": "Koneksi internet bermasalah atau server lambat merespon.",
   "errorServerError": "Terjadi masalah pada server kami. Silakan coba beberapa saat lagi.",
   "errorUnknown": "Terjadi kesalahan yang tidak terduga.",
-  "refreshButtonText": "Coba Lagi"
+  "refreshButtonText": "Coba Lagi",
+  "logoutDialogText": "Apakah anda yakin ingin keluar aplikasi?",
+  "yes": "Ya",
+  "no": "Tidak"
 }

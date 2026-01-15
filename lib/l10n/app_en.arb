@@ -22,5 +22,8 @@
   "errorTimeout": "Connection timeout. Server is taking too long to respond.",
   "errorServerError": "Server encountered a problem. Please try again later.",
   "errorUnknown": "An unexpected error occurred.",
-  "refreshButtonText": "Try Again"
+  "refreshButtonText": "Try Again",
+  "logoutDialogText": "Are you sure you want to exit the application?",
+  "yes": "Yes",
+  "no": "No"
 }
