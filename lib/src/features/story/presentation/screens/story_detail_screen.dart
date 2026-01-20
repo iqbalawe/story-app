@@ -7,6 +7,7 @@ import 'package:story_app/src/features/story/presentation/blocs/detail/story_det
 import 'package:story_app/src/features/story/presentation/widgets/item_image_container.dart';
 import 'package:story_app/src/features/story/presentation/widgets/loading_story_detail.dart';
 import 'package:story_app/src/features/story/presentation/widgets/post_detail_overview.dart';
+import 'package:story_app/src/features/story/presentation/widgets/story_detail_map.dart';
 
 class StoryDetailScreen extends StatefulWidget {
   const StoryDetailScreen({required this.storyId, super.key});
@@ -61,6 +62,11 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           children: [
             ItemImageContainer(story: story),
             PostDetailOverview(story: story),
+            if (story.lat != null && story.lon != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: StoryDetailMap(lat: story.lat!, lon: story.lon!),
+              ),
           ],
         ),
       );

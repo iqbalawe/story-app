@@ -13,6 +13,7 @@ class LogoutDialogWidget extends StatelessWidget {
       title: Text(
         AppLocalizations.of(context)!.logoutDialogText,
         textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.titleLarge,
       ),
       content: Row(
         mainAxisSize: MainAxisSize.min,

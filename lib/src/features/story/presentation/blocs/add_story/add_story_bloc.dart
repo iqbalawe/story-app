@@ -15,8 +15,8 @@ class AddStoryBloc extends Bloc<AddStoryEvent, AddStoryState> {
         final message = await repository.addStory(
           event.file,
           event.description,
-          event.lat,
-          event.lon,
+          lat: event.lat,
+          lon: event.lon,
         );
         emit(AddStorySuccess(message));
       } catch (e) {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:story_app/l10n/app_localizations.dart';
 import 'package:story_app/src/core/utils/my_show_snackbar.dart';
@@ -22,6 +23,20 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   final _descriptionController = TextEditingController();
   File? _imageFile;
   final _picker = ImagePicker();
+  LatLng? _selectedLocation;
+  String? _selectedAddress;
+
+  Future<void> _onPickLocation() async {
+    final result = await context.push<Map<String, dynamic>>('/pick-location');
+
+    if (result != null) {
+      setState(() {
+        final latLng = result['latLng'] as LatLng;
+        _selectedLocation = latLng;
+        _selectedAddress = result['address'] as String;
+      });
+    }
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(
@@ -51,7 +66,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
     }
 
     context.read<AddStoryBloc>().add(
-      UploadStory(file: _imageFile!, description: _descriptionController.text),
+      UploadStory(
+        file: _imageFile!,
+        description: _descriptionController.text,
+        lat: _selectedLocation?.latitude,
+        lon: _selectedLocation?.longitude,
+      ),
     );
   }
 
@@ -121,9 +141,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.addStoryDescription,
                   hintStyle: theme.textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.outline.withValues(alpha: 0.5),
+                    color: theme.colorScheme.outline.withValues(alpha: 0.5),
                   ),
                   filled: false,
                   border: InputBorder.none,
@@ -131,6 +149,23 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                   focusedBorder: InputBorder.none,
                   errorBorder: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const SizedBox(height: 24),
+              if (_selectedLocation != null) ...[
+                Text(
+                  'Lokasi: $_selectedAddress',
+                  style: theme.textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 8),
+              ],
+              OutlinedButton.icon(
+                onPressed: _onPickLocation,
+                icon: Icon(
+                  _selectedLocation == null ? Icons.map : Icons.edit_location,
+                ),
+                label: Text(
+                  _selectedLocation == null ? 'Pilih Lokasi' : 'Ubah Lokasi',
                 ),
               ),
             ],

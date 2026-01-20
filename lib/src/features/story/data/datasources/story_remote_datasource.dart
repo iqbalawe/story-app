@@ -87,13 +87,18 @@ class StoryRemoteDatasourceImpl extends StoryRemoteDatasource {
 
       String fileName = imageFile.path.split('/').last;
 
-      final formData = FormData.fromMap({
+      final Map<String, dynamic> formMap = {
         'description': description,
         'photo': await MultipartFile.fromFile(
           imageFile.path,
           filename: fileName,
         ),
-      });
+      };
+
+      if (lat != null) formMap['lat'] = lat.toString();
+      if (lon != null) formMap['lon'] = lon.toString();
+
+      final formData = FormData.fromMap(formMap);
 
       final response = await dioClient.dio.post(
         '/stories',

@@ -19,4 +19,7 @@ class UploadStory extends AddStoryEvent {
   final String description;
   final double? lat;
   final double? lon;
+
+  @override
+  List<Object> get props => [file, description, lat!, lon!];
 }

@@ -7,8 +7,8 @@ abstract class StoryRepository {
   Future<Story> getStoryDetail(String id);
   Future<String> addStory(
     File file,
-    String description,
+    String description, {
     double? lat,
     double? lon,
-  );
+  });
 }

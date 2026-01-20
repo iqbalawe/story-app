@@ -5,6 +5,7 @@ import 'package:story_app/src/features/auth/presentation/screens/login_screen.da
 import 'package:story_app/src/features/auth/presentation/screens/register_screen.dart';
 import 'package:story_app/src/features/auth/presentation/screens/splash_screen.dart';
 import 'package:story_app/src/features/story/presentation/screens/add_story_screen.dart';
+import 'package:story_app/src/features/story/presentation/screens/pick_location_screen.dart';
 import 'package:story_app/src/features/story/presentation/screens/story_detail_screen.dart';
 import 'package:story_app/src/features/story/presentation/screens/story_list_screen.dart';
 
@@ -59,6 +60,10 @@ class AppRouter {
         path: '/add-story',
         name: 'add_story',
         builder: (context, state) => const AddStoryScreen(),
+      ),
+      GoRoute(
+        path: '/pick-location',
+        builder: (context, state) => const PickLocationScreen(),
       ),
       GoRoute(
         path: '/home',

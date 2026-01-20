@@ -44,10 +44,10 @@ class StoryRepositoryImpl implements StoryRepository {
   @override
   Future<String> addStory(
     File file,
-    String description,
+    String description, {
     double? lat,
     double? lon,
-  ) async {
+  }) async {
     return await remoteDatasource.addStory(file, description, lat, lon);
   }
 }
