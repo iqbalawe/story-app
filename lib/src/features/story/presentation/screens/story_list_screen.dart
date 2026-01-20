@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/src/core/bloc/localization_bloc.dart';
 import 'package:story_app/src/core/utils/error_mapper.dart';
-import 'package:story_app/src/core/widgets/app_loading.dart';
 import 'package:story_app/src/core/widgets/custom_error_widget.dart';
 import 'package:story_app/src/features/story/presentation/blocs/story/story_bloc.dart';
 import 'package:story_app/src/features/story/presentation/widgets/empty_stories_widget.dart';
-import 'package:story_app/src/features/story/presentation/widgets/item_card.dart';
+import 'package:story_app/src/features/story/presentation/widgets/loading_story_list.dart';
 import 'package:story_app/src/features/story/presentation/widgets/logout_dialog_widget.dart';
 import 'package:story_app/src/features/story/presentation/widgets/my_popup_menu_button.dart';
+import 'package:story_app/src/features/story/presentation/widgets/story_list_body.dart';
 
 class StoryListScreen extends StatefulWidget {
   const StoryListScreen({super.key});
@@ -57,34 +57,10 @@ class _StoryListScreenState extends State<StoryListScreen> {
         onRefresh: () async => context.read<StoryBloc>().add(FetchStories()),
         child: BlocBuilder<StoryBloc, StoryState>(
           builder: (context, state) {
-            if (state is StoryLoading) {
-              return const Center(child: AppLoading());
-            } else if (state is StoryLoaded) {
-              final stories = state.stories;
-
-              if (stories.isEmpty) {
-                return const EmptyStoriesWidget();
-              }
-
-              return ListView.builder(
-                itemCount: stories.length,
-                itemBuilder: (context, index) {
-                  final story = stories[index];
-                  return InkWell(
-                    onTap: () => context.go('/home/stories/${story.id}'),
-                    child: ItemCard(story: story),
-                  );
-                },
-              );
-            } else if (state is StoryError) {
-              final message = state.message;
-
-              return CustomErrorWidget(
-                errorMessage: ErrorMapper.getErrorMessage(message, context),
-                onRetry: () => context.read<StoryBloc>().add(FetchStories()),
-              );
-            }
-            return const Placeholder();
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: _buildBody(context, state),
+            );
           },
         ),
       ),
@@ -93,5 +69,23 @@ class _StoryListScreenState extends State<StoryListScreen> {
         child: const Icon(Icons.add_a_photo_outlined),
       ),
     );
+  }
+
+  Widget _buildBody(BuildContext context, StoryState state) {
+    if (state is StoryLoading) {
+      return const LoadingStoryList();
+    } else if (state is StoryLoaded) {
+      final stories = state.stories;
+      if (stories.isEmpty) {
+        return const EmptyStoriesWidget();
+      }
+      return StoryListBody(stories: stories);
+    } else if (state is StoryError) {
+      return CustomErrorWidget(
+        errorMessage: ErrorMapper.getErrorMessage(state.message, context),
+        onRetry: () => context.read<StoryBloc>().add(FetchStories()),
+      );
+    }
+    return const SizedBox.shrink();
   }
 }

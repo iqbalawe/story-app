@@ -71,9 +71,9 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
           BlocBuilder<AddStoryBloc, AddStoryState>(
             builder: (context, state) {
               if (state is AddStoryLoading) {
-                return const Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: AppLoading(),
+                return Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: AppLoading(color: appBarColor),
                 );
               }
 
