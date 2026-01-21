@@ -14,6 +14,8 @@ class StoryDetailScreen extends StatefulWidget {
 }
 
 class _StoryDetailScreenState extends State<StoryDetailScreen> {
+  bool _isLiked = false;
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +46,41 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: theme.colorScheme.surface,
+        onPressed: () {
+          setState(() {
+            _isLiked = !_isLiked;
+          });
+
+          if (_isLiked) {
+            myShowSnackbar(
+              context: context,
+              text: 'You liked this story! ❤️',
+              backgroundColor: theme.colorScheme.secondary,
+            );
+          }
+        },
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return ScaleTransition(scale: animation, child: child);
+          },
+          child: _isLiked
+              ? const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                  key: ValueKey('liked'),
+                  size: 30,
+                )
+              : Icon(
+                  Icons.favorite_border,
+                  color: theme.colorScheme.onSurface,
+                  key: const ValueKey('unliked'),
+                  size: 30,
+                ),
+        ),
+      ),
     );
   }
 
@@ -64,6 +101,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: StoryDetailMap(lat: story.lat!, lon: story.lon!),
                 ),
+              const SizedBox(height: 80),
             ],
           ),
         );

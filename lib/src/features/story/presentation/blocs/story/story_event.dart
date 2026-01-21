@@ -3,4 +3,6 @@ part of 'story_bloc.dart';
 @freezed
 class StoryEvent with _$StoryEvent {
   const factory StoryEvent.fetchStories() = _FetchStories;
+
+  const factory StoryEvent.refreshStories() = _RefreshStories;
 }

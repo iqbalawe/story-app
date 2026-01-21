@@ -22,6 +22,11 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
       _onFetchStories,
       transformer: throttleDroppable(throttleDuration),
     );
+
+    on<_RefreshStories>((event, emit) {
+      emit(const StoryState());
+      add(const StoryEvent.fetchStories());
+    });
   }
 
   Future<void> _onFetchStories(

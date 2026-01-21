@@ -115,7 +115,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                 text: message,
                 backgroundColor: Colors.green,
               );
-              context.read<StoryBloc>().add(const StoryEvent.fetchStories());
+              context.read<StoryBloc>().add(const StoryEvent.refreshStories());
               context.pop();
             },
             failure: (message) {

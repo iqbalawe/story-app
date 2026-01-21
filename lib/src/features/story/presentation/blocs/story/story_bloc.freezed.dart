@@ -55,11 +55,12 @@ extension StoryEventPatterns on StoryEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _FetchStories value)?  fetchStories,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _FetchStories value)?  fetchStories,TResult Function( _RefreshStories value)?  refreshStories,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _FetchStories() when fetchStories != null:
-return fetchStories(_that);case _:
+return fetchStories(_that);case _RefreshStories() when refreshStories != null:
+return refreshStories(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return fetchStories(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _FetchStories value)  fetchStories,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _FetchStories value)  fetchStories,required TResult Function( _RefreshStories value)  refreshStories,}){
 final _that = this;
 switch (_that) {
 case _FetchStories():
-return fetchStories(_that);case _:
+return fetchStories(_that);case _RefreshStories():
+return refreshStories(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +100,12 @@ return fetchStories(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _FetchStories value)?  fetchStories,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _FetchStories value)?  fetchStories,TResult? Function( _RefreshStories value)?  refreshStories,}){
 final _that = this;
 switch (_that) {
 case _FetchStories() when fetchStories != null:
-return fetchStories(_that);case _:
+return fetchStories(_that);case _RefreshStories() when refreshStories != null:
+return refreshStories(_that);case _:
   return null;
 
 }
@@ -119,10 +122,11 @@ return fetchStories(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  fetchStories,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  fetchStories,TResult Function()?  refreshStories,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FetchStories() when fetchStories != null:
-return fetchStories();case _:
+return fetchStories();case _RefreshStories() when refreshStories != null:
+return refreshStories();case _:
   return orElse();
 
 }
@@ -140,10 +144,11 @@ return fetchStories();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  fetchStories,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  fetchStories,required TResult Function()  refreshStories,}) {final _that = this;
 switch (_that) {
 case _FetchStories():
-return fetchStories();case _:
+return fetchStories();case _RefreshStories():
+return refreshStories();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +165,11 @@ return fetchStories();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  fetchStories,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  fetchStories,TResult? Function()?  refreshStories,}) {final _that = this;
 switch (_that) {
 case _FetchStories() when fetchStories != null:
-return fetchStories();case _:
+return fetchStories();case _RefreshStories() when refreshStories != null:
+return refreshStories();case _:
   return null;
 
 }
@@ -195,6 +201,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'StoryEvent.fetchStories()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _RefreshStories implements StoryEvent {
+  const _RefreshStories();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RefreshStories);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'StoryEvent.refreshStories()';
 }
 
 

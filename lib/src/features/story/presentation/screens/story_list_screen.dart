@@ -70,7 +70,7 @@ class _StoryListScreenState extends State<StoryListScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async =>
-            context.read<StoryBloc>().add(const StoryEvent.fetchStories()),
+            context.read<StoryBloc>().add(const StoryEvent.refreshStories()),
         child: BlocBuilder<StoryBloc, StoryState>(
           builder: (context, state) {
             return AnimatedSwitcher(
