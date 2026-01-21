@@ -34,14 +34,21 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthFailure) {
-            final message = ErrorMapper.getErrorMessage(state.message, context);
-            myShowSnackbar(context: context, text: message);
-          }
+          state.maybeWhen(
+            failure: (message) {
+              final errorMessage = ErrorMapper.getErrorMessage(
+                message,
+                context,
+              );
+              myShowSnackbar(context: context, text: errorMessage);
+            },
+            orElse: () {},
+          );
         },
         child: LayoutBuilder(
           builder: (context, constraints) => SingleChildScrollView(
@@ -98,25 +105,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 24),
                       BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) => ElevatedButton(
-                          onPressed: state is AuthLoading
-                              ? null
-                              : () {
-                                  context.read<AuthBloc>().add(
-                                    AuthLoginRequested(
-                                      _emailController.text,
-                                      _passwordController.text,
-                                    ),
-                                  );
-                                },
-                          child: state is AuthLoading
-                              ? const AppLoading()
-                              : Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.titleLoginButton,
-                                ),
-                        ),
+                        builder: (context, state) {
+                          final isLoading = state.maybeWhen(
+                            loading: () => true,
+                            orElse: () => false,
+                          );
+
+                          return ElevatedButton(
+                            onPressed: isLoading
+                                ? null
+                                : () {
+                                    context.read<AuthBloc>().add(
+                                      AuthEvent.loginRequested(
+                                        _emailController.text,
+                                        _passwordController.text,
+                                      ),
+                                    );
+                                  },
+                            child: isLoading
+                                ? const AppLoading()
+                                : Text(localizations.titleLoginButton),
+                          );
+                        },
                       ),
                       const Spacer(),
                       AuthFooter(

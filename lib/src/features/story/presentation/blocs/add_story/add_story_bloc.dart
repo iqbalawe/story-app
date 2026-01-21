@@ -1,16 +1,18 @@
 import 'dart:io';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:story_app/src/features/story/domain/domain.dart';
 
 part 'add_story_event.dart';
 part 'add_story_state.dart';
+part 'add_story_bloc.freezed.dart';
 
 class AddStoryBloc extends Bloc<AddStoryEvent, AddStoryState> {
-  AddStoryBloc(this.repository) : super(AddStoryInitial()) {
-    on<UploadStory>((event, emit) async {
-      emit(AddStoryLoading());
+  AddStoryBloc(this.repository) : super(const AddStoryState.initial()) {
+    on<_UploadStory>((event, emit) async {
+      emit(const AddStoryState.loading());
+
       try {
         final message = await repository.addStory(
           event.file,
@@ -18,9 +20,10 @@ class AddStoryBloc extends Bloc<AddStoryEvent, AddStoryState> {
           lat: event.lat,
           lon: event.lon,
         );
-        emit(AddStorySuccess(message));
+        emit(AddStoryState.success(message));
       } catch (e) {
-        emit(AddStoryFailure(e.toString().replaceAll('Exception: ', '')));
+        final errorMessage = e.toString().replaceAll('Exception: ', '');
+        emit(AddStoryState.failure(errorMessage));
       }
     });
   }

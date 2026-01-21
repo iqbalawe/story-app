@@ -26,8 +26,9 @@ class LogoutDialogWidget extends StatelessWidget {
           ),
           Expanded(
             child: TextButton(
-              onPressed: () =>
-                  context.read<AuthBloc>().add(AuthLogoutRequested()),
+              onPressed: () => context.read<AuthBloc>().add(
+                const AuthEvent.logoutRequested(),
+              ),
               child: Text(AppLocalizations.of(context)!.yes),
             ),
           ),

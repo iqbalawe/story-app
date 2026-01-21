@@ -1,10 +1,6 @@
 part of 'story_bloc.dart';
 
-sealed class StoryEvent extends Equatable {
-  const StoryEvent();
-
-  @override
-  List<Object> get props => [];
+@freezed
+class StoryEvent with _$StoryEvent {
+  const factory StoryEvent.fetchStories() = _FetchStories;
 }
-
-class FetchStories extends StoryEvent {}

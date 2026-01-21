@@ -1,19 +1,22 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:story_app/src/features/story/domain/domain.dart';
 
+part 'story_detail_bloc.freezed.dart';
 part 'story_detail_event.dart';
 part 'story_detail_state.dart';
 
 class StoryDetailBloc extends Bloc<StoryDetailEvent, StoryDetailState> {
-  StoryDetailBloc(this.repository) : super(StoryDetailInitial()) {
-    on<FetchStoryDetail>((event, emit) async {
-      emit(StoryDetailLoading());
+  StoryDetailBloc(this.repository) : super(const StoryDetailState.initial()) {
+    on<_FetchStoryDetail>((event, emit) async {
+      emit(const StoryDetailState.loading());
+
       try {
         final story = await repository.getStoryDetail(event.id);
-        emit(StoryDetailLoaded(story));
+        emit(StoryDetailState.loaded(story));
       } catch (e) {
-        emit(StoryDetailFailure(e.toString().replaceAll('Exception: ', '')));
+        final errorMessage = e.toString().replaceAll('Exception: ', '');
+        emit(StoryDetailState.failure(errorMessage));
       }
     });
   }

@@ -50,20 +50,19 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
 
   void _uploadStory() {
     if (_imageFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Mohon pilih gambar terlebih dahulu')),
+      myShowSnackbar(
+        context: context,
+        text: 'Mohon pilih gambar terlebih dahulu',
       );
       return;
     }
     if (_descriptionController.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Mohon isi deskripsi')));
+      myShowSnackbar(context: context, text: 'Mohon isi deskripsi');
       return;
     }
 
     context.read<AddStoryBloc>().add(
-      UploadStory(
+      AddStoryEvent.uploadStory(
         file: _imageFile!,
         description: _descriptionController.text,
         lat: _selectedLocation?.latitude,
@@ -87,7 +86,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
         actions: [
           BlocBuilder<AddStoryBloc, AddStoryState>(
             builder: (context, state) {
-              if (state is AddStoryLoading) {
+              final isLoading = state.maybeWhen(
+                loading: () => true,
+                orElse: () => false,
+              );
+
+              if (isLoading) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: AppLoading(color: appBarColor),
@@ -95,7 +99,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
               }
 
               return IconButton(
-                onPressed: state is AddStoryLoading ? null : _uploadStory,
+                onPressed: isLoading ? null : _uploadStory,
                 icon: const Icon(Icons.check_outlined),
               );
             },
@@ -104,17 +108,21 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
       ),
       body: BlocListener<AddStoryBloc, AddStoryState>(
         listener: (context, state) {
-          if (state is AddStorySuccess) {
-            myShowSnackbar(
-              context: context,
-              text: state.message,
-              backgroundColor: Colors.green,
-            );
-            context.read<StoryBloc>().add(FetchStories());
-            context.pop();
-          } else if (state is AddStoryFailure) {
-            myShowSnackbar(context: context, text: state.message);
-          }
+          state.maybeWhen(
+            success: (message) {
+              myShowSnackbar(
+                context: context,
+                text: message,
+                backgroundColor: Colors.green,
+              );
+              context.read<StoryBloc>().add(const StoryEvent.fetchStories());
+              context.pop();
+            },
+            failure: (message) {
+              myShowSnackbar(context: context, text: message);
+            },
+            orElse: () {},
+          );
         },
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -150,9 +158,20 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
               ),
               const SizedBox(height: 24),
               if (_selectedLocation != null) ...[
-                Text(
-                  'Lokasi: $_selectedAddress',
-                  style: theme.textTheme.bodyMedium,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      color: theme.colorScheme.primary,
+                      size: 32,
+                    ),
+                    Expanded(
+                      child: Text(
+                        _selectedAddress ?? '',
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
               ],

@@ -17,7 +17,9 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<StoryDetailBloc>().add(FetchStoryDetail(widget.storyId));
+    context.read<StoryDetailBloc>().add(
+      StoryDetailEvent.fetchStoryDetail(widget.storyId),
+    );
   }
 
   @override
@@ -46,33 +48,34 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
   }
 
   Widget _buildDetailBody(BuildContext context, StoryDetailState state) {
-    if (state is StoryDetailLoading) {
-      return const LoadingStoryDetail();
-    } else if (state is StoryDetailLoaded) {
-      final story = state.story;
-      return SingleChildScrollView(
-        key: const ValueKey('story_detail_content'),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ItemImageContainer(story: story),
-            PostDetailOverview(story: story),
-            if (story.lat != null && story.lon != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: StoryDetailMap(lat: story.lat!, lon: story.lon!),
-              ),
-          ],
-        ),
-      );
-    } else if (state is StoryDetailFailure) {
-      return CustomErrorWidget(
-        errorMessage: ErrorMapper.getErrorMessage(state.message, context),
-        onRetry: () => context.read<StoryDetailBloc>().add(
-          FetchStoryDetail(widget.storyId),
-        ),
-      );
-    }
-    return const SizedBox.shrink();
+    return state.when(
+      initial: () => const SizedBox.shrink(),
+      loading: () => const LoadingStoryDetail(),
+      loaded: (story) {
+        return SingleChildScrollView(
+          key: const ValueKey('story_detail_content'),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ItemImageContainer(story: story),
+              PostDetailOverview(story: story),
+              if (story.lat != null && story.lon != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: StoryDetailMap(lat: story.lat!, lon: story.lon!),
+                ),
+            ],
+          ),
+        );
+      },
+      failure: (message) {
+        return CustomErrorWidget(
+          errorMessage: ErrorMapper.getErrorMessage(message, context),
+          onRetry: () => context.read<StoryDetailBloc>().add(
+            StoryDetailEvent.fetchStoryDetail(widget.storyId),
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,50 +1,33 @@
-class StoryResponseModel {
-  StoryResponseModel({
-    required this.error,
-    required this.message,
-    required this.listStory,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:story_app/src/features/story/domain/domain.dart';
 
-  final bool error;
-  final String message;
-  final List<StoryModel> listStory;
+part 'story_model.freezed.dart';
+part 'story_model.g.dart';
 
-  factory StoryResponseModel.fromJson(Map<String, dynamic> json) =>
-      StoryResponseModel(
-        error: json['error'],
-        message: json['message'],
-        listStory: (json['listStory'] as List)
-            .map((e) => StoryModel.fromJson(e))
-            .toList(),
-      );
-}
+@freezed
+abstract class StoryModel with _$StoryModel {
+  const StoryModel._();
 
-class StoryModel {
-  StoryModel({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.photoUrl,
-    required this.createdAt,
-    this.lat,
-    this.lon,
-  });
+  const factory StoryModel({
+    required String id,
+    required String name,
+    required String description,
+    required String photoUrl,
+    required DateTime createdAt,
+    double? lat,
+    double? lon,
+  }) = _StoryModel;
 
-  final String id;
-  final String name;
-  final String description;
-  final String photoUrl;
-  final DateTime createdAt;
-  final double? lat;
-  final double? lon;
+  factory StoryModel.fromJson(Map<String, dynamic> json) =>
+      _$StoryModelFromJson(json);
 
-  factory StoryModel.fromJson(Map<String, dynamic> json) => StoryModel(
-    id: json['id'],
-    name: json['name'],
-    description: json['description'],
-    photoUrl: json['photoUrl'],
-    createdAt: DateTime.parse(json['createdAt']),
-    lat: json['lat'] != null ? (json['lat'] as num).toDouble() : null,
-    lon: json['lon'] != null ? (json['lon'] as num).toDouble() : null,
+  Story toEntity() => Story(
+    id: id,
+    name: name,
+    description: description,
+    photoUrl: photoUrl,
+    createdAt: createdAt,
+    lat: lat,
+    lon: lon,
   );
 }

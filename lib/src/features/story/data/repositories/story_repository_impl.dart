@@ -21,19 +21,7 @@ class StoryRepositoryImpl implements StoryRepository {
       location: location,
     );
 
-    return storyModels
-        .map(
-          (model) => Story(
-            id: model.id,
-            name: model.name,
-            description: model.description,
-            photoUrl: model.photoUrl,
-            createdAt: model.createdAt,
-            lat: model.lat,
-            lon: model.lon,
-          ),
-        )
-        .toList();
+    return storyModels.map((model) => model.toEntity()).toList();
   }
 
   @override

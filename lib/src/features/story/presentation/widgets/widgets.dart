@@ -5,6 +5,7 @@ export 'item_card.dart';
 export 'item_image_container.dart';
 export 'loading_story_detail.dart';
 export 'loading_story_list.dart';
+export 'location_card.dart';
 export 'logout_dialog_widget.dart';
 export 'my_popup_menu_button.dart';
 export 'post_detail_overview.dart';

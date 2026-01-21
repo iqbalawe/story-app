@@ -44,7 +44,9 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: authBloc..add(AuthCheckRequested())),
+        BlocProvider.value(
+          value: authBloc..add(const AuthEvent.checkRequested()),
+        ),
         BlocProvider(
           create: (context) => StoryBloc(storyRepository: storyRepository),
         ),
@@ -52,7 +54,8 @@ void main() async {
         BlocProvider(create: (context) => AddStoryBloc(storyRepository)),
         BlocProvider(
           create: (context) =>
-              LocalizationBloc(storage: storage)..add(LoadSavedLanguage()),
+              LocalizationBloc(storage: storage)
+                ..add(const LocalizationEvent.loadSavedLanguage()),
         ),
       ],
       child: MyApp(appRouter: appRouter),

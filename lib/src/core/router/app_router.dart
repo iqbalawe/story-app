@@ -14,25 +14,36 @@ class AppRouter {
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
       final authState = authBloc.state;
+      final location = state.uri.toString();
 
-      final isLoggingIn = state.uri.toString() == '/login';
-      final isRegistering = state.uri.toString() == '/register';
-      final isSplash = state.uri.toString() == '/splash';
+      final isLoggingIn = location == '/login';
+      final isRegistering = location == '/register';
+      final isSplash = location == '/splash';
 
-      if (authState is Unauthenticated) {
+      final bool isLoggedIn = authState.maybeWhen(
+        authenticated: () => true,
+        loginSuccess: () => true,
+        orElse: () => false,
+      );
+
+      final bool isLoggedOut = authState.maybeWhen(
+        unauthenticated: () => true,
+        initial: () => true,
+        orElse: () => false,
+      );
+
+      if (isLoggedOut) {
         if (isSplash) {
           return '/login';
         }
-
         if (isLoggingIn || isRegistering) {
           return null;
         }
-
         return '/login';
       }
 
-      if (authState is Authenticated || authState is AuthLoginSuccess) {
-        if (isLoggingIn || isSplash || isRegistering) {
+      if (isLoggedIn) {
+        if (isSplash || isLoggingIn || isRegistering) {
           return '/home';
         }
         return null;

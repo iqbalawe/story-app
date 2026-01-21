@@ -37,20 +37,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) => Scaffold(
     body: BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthRegisterSuccess) {
-          myShowSnackbar(
-            context: context,
-            text: state.message,
-            backgroundColor: Colors.green,
-          );
-          context.go('/login');
-        } else if (state is AuthFailure) {
-          final message = ErrorMapper.getErrorMessage(state.message, context);
-          myShowSnackbar(context: context, text: message);
-        }
+        state.maybeWhen(
+          registerSuccess: (message) {
+            myShowSnackbar(
+              context: context,
+              text: message,
+              backgroundColor: Colors.green,
+            );
+            context.go('/login');
+          },
+          failure: (message) {
+            final errorMessage = ErrorMapper.getErrorMessage(message, context);
+            myShowSnackbar(context: context, text: errorMessage);
+          },
+          orElse: () {},
+        );
       },
       builder: (context, state) {
         final textTheme = Theme.of(context).textTheme;
+        final localizations = AppLocalizations.of(context)!;
+
+        final isLoading = state.maybeWhen(
+          loading: () => true,
+          orElse: () => false,
+        );
 
         return LayoutBuilder(
           builder: (context, constraints) => SingleChildScrollView(
@@ -69,13 +79,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       const Spacer(),
                       Text(
-                        AppLocalizations.of(context)!.registerTitle,
+                        localizations.registerTitle,
                         style: textTheme.displayLarge,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        AppLocalizations.of(context)!.registerTagline,
+                        localizations.registerTagline,
                         style: textTheme.titleLarge,
                         textAlign: TextAlign.center,
                       ),
@@ -83,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextField(
                         controller: _nameController,
                         decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.registerName,
+                          labelText: localizations.registerName,
                           suffixIcon: const Icon(Icons.person_outline),
                         ),
                       ),
@@ -92,7 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.email,
+                          labelText: localizations.email,
                           suffixIcon: const Icon(Icons.mail_outline),
                         ),
                       ),
@@ -100,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextField(
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.password,
+                          labelText: localizations.password,
                           suffixIcon: IconButton(
                             onPressed: _passwordVisibilityHandler,
                             icon: Icon(
@@ -114,32 +124,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 24),
                       ElevatedButton(
-                        onPressed: state is AuthLoading
+                        onPressed: isLoading
                             ? null
                             : () {
                                 context.read<AuthBloc>().add(
-                                  AuthRegisterRequested(
+                                  AuthEvent.registerRequested(
                                     _nameController.text,
                                     _emailController.text,
                                     _passwordController.text,
                                   ),
                                 );
                               },
-                        child: state is AuthLoading
+                        child: isLoading
                             ? const AppLoading()
-                            : Text(
-                                AppLocalizations.of(
-                                  context,
-                                )!.titleRegisterButton,
-                              ),
+                            : Text(localizations.titleRegisterButton),
                       ),
                       const Spacer(),
                       AuthFooter(
-                        authText:
-                            '${AppLocalizations.of(context)!.authLoginText} ',
-                        navigationText: AppLocalizations.of(
-                          context,
-                        )!.titleLoginButton,
+                        authText: '${localizations.authLoginText} ',
+                        navigationText: localizations.titleLoginButton,
                         onTap: () => context.go('/login'),
                       ),
                     ],

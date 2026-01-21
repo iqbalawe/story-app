@@ -17,7 +17,7 @@ class _StoryListScreenState extends State<StoryListScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<StoryBloc>().add(FetchStories());
+    context.read<StoryBloc>().add(const StoryEvent.fetchStories());
     _scrollController.addListener(_onScroll);
   }
 
@@ -29,7 +29,7 @@ class _StoryListScreenState extends State<StoryListScreen> {
 
   void _onScroll() {
     if (_isBottom) {
-      context.read<StoryBloc>().add(FetchStories());
+      context.read<StoryBloc>().add(const StoryEvent.fetchStories());
     }
   }
 
@@ -55,7 +55,7 @@ class _StoryListScreenState extends State<StoryListScreen> {
         actions: [
           MyPopupMenuButton(
             onSelected: (value) => context.read<LocalizationBloc>().add(
-              ChangeLanguage(languageCode: value),
+              LocalizationEvent.changeLanguage(value),
             ),
           ),
           IconButton(
@@ -69,7 +69,8 @@ class _StoryListScreenState extends State<StoryListScreen> {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () async => context.read<StoryBloc>().add(FetchStories()),
+        onRefresh: () async =>
+            context.read<StoryBloc>().add(const StoryEvent.fetchStories()),
         child: BlocBuilder<StoryBloc, StoryState>(
           builder: (context, state) {
             return AnimatedSwitcher(
@@ -93,7 +94,8 @@ class _StoryListScreenState extends State<StoryListScreen> {
     } else if (state.status == StoryStatus.failure && state.stories.isEmpty) {
       return CustomErrorWidget(
         errorMessage: ErrorMapper.getErrorMessage(state.errorMessage, context),
-        onRetry: () => context.read<StoryBloc>().add(FetchStories()),
+        onRetry: () =>
+            context.read<StoryBloc>().add(const StoryEvent.fetchStories()),
       );
     } else if (state.status == StoryStatus.success && state.stories.isEmpty) {
       return const EmptyStoriesWidget();

@@ -1,9 +1,10 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:story_app/src/features/story/domain/domain.dart';
 import 'package:stream_transform/stream_transform.dart';
 
+part 'story_bloc.freezed.dart';
 part 'story_event.dart';
 part 'story_state.dart';
 
@@ -17,14 +18,14 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 
 class StoryBloc extends Bloc<StoryEvent, StoryState> {
   StoryBloc({required this.storyRepository}) : super(const StoryState()) {
-    on<FetchStories>(
+    on<_FetchStories>(
       _onFetchStories,
       transformer: throttleDroppable(throttleDuration),
     );
   }
 
   Future<void> _onFetchStories(
-    FetchStories event,
+    _FetchStories event,
     Emitter<StoryState> emit,
   ) async {
     if (state.hasReachedMax) return;
@@ -32,6 +33,7 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
     try {
       if (state.status == StoryStatus.initial) {
         final stories = await storyRepository.getStories(page: 1, size: 10);
+
         return emit(
           state.copyWith(
             status: StoryStatus.success,

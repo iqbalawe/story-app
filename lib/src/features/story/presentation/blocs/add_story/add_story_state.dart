@@ -1,22 +1,9 @@
 part of 'add_story_bloc.dart';
 
-sealed class AddStoryState extends Equatable {
-  const AddStoryState();
-
-  @override
-  List<Object> get props => [];
-}
-
-final class AddStoryInitial extends AddStoryState {}
-
-final class AddStoryLoading extends AddStoryState {}
-
-final class AddStorySuccess extends AddStoryState {
-  final String message;
-  const AddStorySuccess(this.message);
-}
-
-final class AddStoryFailure extends AddStoryState {
-  final String message;
-  const AddStoryFailure(this.message);
+@freezed
+class AddStoryState with _$AddStoryState {
+  const factory AddStoryState.initial() = _Initial;
+  const factory AddStoryState.loading() = _Loading;
+  const factory AddStoryState.success(String message) = _Success;
+  const factory AddStoryState.failure(String message) = _Failure;
 }

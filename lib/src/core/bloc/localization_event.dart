@@ -1,19 +1,9 @@
 part of 'localization_bloc.dart';
 
-sealed class LocalizationEvent extends Equatable {
-  const LocalizationEvent();
+@freezed
+class LocalizationEvent with _$LocalizationEvent {
+  const factory LocalizationEvent.changeLanguage(String languageCode) =
+      _ChangeLanguage;
 
-  @override
-  List<Object> get props => [];
+  const factory LocalizationEvent.loadSavedLanguage() = _LoadSavedLanguage;
 }
-
-class ChangeLanguage extends LocalizationEvent {
-  const ChangeLanguage({required this.languageCode});
-
-  final String languageCode;
-
-  @override
-  List<Object> get props => [languageCode];
-}
-
-class LoadSavedLanguage extends LocalizationEvent {}
