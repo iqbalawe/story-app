@@ -72,35 +72,50 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: Stack(
-      children: [
-        GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: _defaultLocation,
-            zoom: 15,
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: _defaultLocation,
+              zoom: 15,
+            ),
+            onMapCreated: (controller) => _mapController = controller,
+            markers: _markers,
+            onTap: _onMapTapped,
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            mapToolbarEnabled: false,
+            zoomControlsEnabled: false,
           ),
-          onMapCreated: (controller) => _mapController = controller,
-          markers: _markers,
-          onTap: _onMapTapped,
-          myLocationEnabled: true,
-          myLocationButtonEnabled: false,
-          mapToolbarEnabled: false,
-          zoomControlsEnabled: false,
-        ),
-        if (_selectedLocation != null)
           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: LocationCard(
-              address: _address,
-              onPressed: _confirmSelection,
-              isLoadingAddress: _isLoadingAddress,
-              selectedLocation: _selectedLocation,
+            top: MediaQuery.of(context).padding.top + 16,
+            left: 16,
+            child: FloatingActionButton.small(
+              heroTag: 'btn_back',
+              backgroundColor: theme.colorScheme.surface,
+              onPressed: () => context.pop(),
+              child: Icon(Icons.arrow_back, color: theme.colorScheme.onSurface),
             ),
           ),
-      ],
-    ),
-  );
+          if (_selectedLocation != null)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: LocationCard(
+                address: _address,
+                onPressed: _confirmSelection,
+                isLoadingAddress: _isLoadingAddress,
+                selectedLocation: _selectedLocation,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }

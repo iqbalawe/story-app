@@ -157,33 +157,58 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              if (_selectedLocation != null) ...[
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: theme.colorScheme.primary,
-                      size: 32,
-                    ),
-                    Expanded(
-                      child: Text(
-                        _selectedAddress ?? '',
-                        style: theme.textTheme.bodyMedium,
+              if (FlavorConfig.isPaid) ...[
+                if (_selectedLocation != null) ...[
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        color: theme.colorScheme.primary,
+                        size: 32,
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: Text(
+                          _selectedAddress ?? '',
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                ],
+                OutlinedButton.icon(
+                  onPressed: _onPickLocation,
+                  icon: Icon(
+                    _selectedLocation == null ? Icons.map : Icons.edit_location,
+                  ),
+                  label: Text(
+                    _selectedLocation == null ? 'Pilih Lokasi' : 'Ubah Lokasi',
+                  ),
                 ),
-                const SizedBox(height: 8),
+              ] else ...[
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.lock_outline, color: Colors.grey),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Fitur lokasi hanya tersedia untuk versi berbayar (Paid).',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
-              OutlinedButton.icon(
-                onPressed: _onPickLocation,
-                icon: Icon(
-                  _selectedLocation == null ? Icons.map : Icons.edit_location,
-                ),
-                label: Text(
-                  _selectedLocation == null ? 'Pilih Lokasi' : 'Ubah Lokasi',
-                ),
-              ),
             ],
           ),
         ),

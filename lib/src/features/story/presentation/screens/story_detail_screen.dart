@@ -67,15 +67,15 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
             return ScaleTransition(scale: animation, child: child);
           },
           child: _isLiked
-              ? const Icon(
+              ? Icon(
                   Icons.favorite,
-                  color: Colors.red,
-                  key: ValueKey('liked'),
+                  color: theme.colorScheme.error,
+                  key: const ValueKey('liked'),
                   size: 30,
                 )
               : Icon(
                   Icons.favorite_border,
-                  color: theme.colorScheme.onSurface,
+                  color: theme.colorScheme.error,
                   key: const ValueKey('unliked'),
                   size: 30,
                 ),
@@ -86,11 +86,11 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
 
   Widget _buildDetailBody(BuildContext context, StoryDetailState state) {
     return state.when(
-      initial: () => const SizedBox.shrink(),
-      loading: () => const LoadingStoryDetail(),
+      initial: () => const SizedBox.shrink(key: ValueKey('initial')),
+      loading: () => const LoadingStoryDetail(key: ValueKey('loading')),
       loaded: (story) {
         return SingleChildScrollView(
-          key: const ValueKey('story_detail_content'),
+          key: ValueKey('content_${story.id}'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -108,6 +108,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
       },
       failure: (message) {
         return CustomErrorWidget(
+          key: const ValueKey('failure'),
           errorMessage: ErrorMapper.getErrorMessage(message, context),
           onRetry: () => context.read<StoryDetailBloc>().add(
             StoryDetailEvent.fetchStoryDetail(widget.storyId),

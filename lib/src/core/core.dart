@@ -1,4 +1,5 @@
 export 'bloc/bloc.dart';
+export 'config/config.dart';
 export 'network/network.dart';
 export 'observer/observer.dart';
 export 'router/router.dart';
