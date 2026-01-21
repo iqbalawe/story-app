@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:story_app/l10n/app_localizations.dart';
-import 'package:story_app/src/core/utils/date_formatter.dart';
-import 'package:story_app/src/features/story/domain/entities/story.dart';
+import 'package:story_app/src/core/core.dart';
+import 'package:story_app/src/features/story/domain/domain.dart';
 
 class PostDetailOverview extends StatelessWidget {
   const PostDetailOverview({required this.story, super.key});

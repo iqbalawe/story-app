@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:story_app/src/core/widgets/shimmer_skeleton.dart';
+import 'package:story_app/src/core/core.dart';
 
 class LoadingStoryDetail extends StatelessWidget {
   const LoadingStoryDetail({super.key});

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:story_app/src/features/story/domain/repositories/story_repository.dart';
+import 'package:story_app/src/features/story/domain/domain.dart';
 
 part 'add_story_event.dart';
 part 'add_story_state.dart';

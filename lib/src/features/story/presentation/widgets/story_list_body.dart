@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:story_app/src/features/story/domain/entities/story.dart';
-import 'package:story_app/src/features/story/presentation/widgets/item_card.dart';
+import 'package:story_app/src/features/story/domain/domain.dart';
+import 'package:story_app/src/features/story/presentation/presentation.dart';
 
 class StoryListBody extends StatelessWidget {
   const StoryListBody({required this.stories, super.key});

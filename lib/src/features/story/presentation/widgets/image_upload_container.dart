@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:story_app/src/features/story/presentation/widgets/image_picker_button.dart';
+import 'package:story_app/src/features/story/presentation/presentation.dart';
 
 class ImageUploadContainer extends StatelessWidget {
   const ImageUploadContainer({

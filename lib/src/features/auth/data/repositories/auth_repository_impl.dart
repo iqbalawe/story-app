@@ -1,5 +1,5 @@
-import 'package:story_app/src/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:story_app/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:story_app/src/features/auth/data/data.dart';
+import 'package:story_app/src/features/auth/domain/domain.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.remoteDatasource});

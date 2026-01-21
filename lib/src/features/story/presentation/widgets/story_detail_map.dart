@@ -56,7 +56,7 @@ class _StoryDetailMapState extends State<StoryDetailMap> {
       margin: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withOpacity(0.5)),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.5)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),

@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:story_app/l10n/app_localizations.dart';
-import 'package:story_app/src/core/utils/error_mapper.dart';
-import 'package:story_app/src/core/widgets/custom_error_widget.dart';
-import 'package:story_app/src/features/story/presentation/blocs/detail/story_detail_bloc.dart';
-import 'package:story_app/src/features/story/presentation/widgets/item_image_container.dart';
-import 'package:story_app/src/features/story/presentation/widgets/loading_story_detail.dart';
-import 'package:story_app/src/features/story/presentation/widgets/post_detail_overview.dart';
-import 'package:story_app/src/features/story/presentation/widgets/story_detail_map.dart';
+import 'package:story_app/src/core/core.dart';
+import 'package:story_app/src/features/story/presentation/presentation.dart';
 
 class StoryDetailScreen extends StatefulWidget {
   const StoryDetailScreen({required this.storyId, super.key});

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:story_app/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:story_app/src/features/auth/domain/domain.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

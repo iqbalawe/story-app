@@ -1,30 +1,42 @@
 part of 'story_bloc.dart';
 
-sealed class StoryState extends Equatable {
-  const StoryState();
+enum StoryStatus { initial, success, failure }
 
-  @override
-  List<Object> get props => [];
-}
+class StoryState extends Equatable {
+  const StoryState({
+    this.status = StoryStatus.initial,
+    this.stories = const <Story>[],
+    this.hasReachedMax = false,
+    this.errorMessage = '',
+    this.page = 1,
+  });
 
-final class StoryInitial extends StoryState {}
-
-final class StoryLoading extends StoryState {}
-
-final class StoryLoaded extends StoryState {
-  const StoryLoaded(this.stories);
-
+  final StoryStatus status;
   final List<Story> stories;
+  final bool hasReachedMax;
+  final String errorMessage;
+  final int page;
+
+  StoryState copyWith({
+    StoryStatus? status,
+    List<Story>? stories,
+    bool? hasReachedMax,
+    String? errorMessage,
+    int? page,
+  }) => StoryState(
+    status: status ?? this.status,
+    stories: stories ?? this.stories,
+    hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    errorMessage: errorMessage ?? this.errorMessage,
+    page: page ?? this.page,
+  );
 
   @override
-  List<Object> get props => [stories];
-}
-
-final class StoryError extends StoryState {
-  const StoryError(this.message);
-
-  final String message;
-
-  @override
-  List<Object> get props => [message];
+  List<Object> get props => [
+    status,
+    stories,
+    hasReachedMax,
+    errorMessage,
+    page,
+  ];
 }

@@ -1,13 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:story_app/src/core/router/go_router_refresh_stream.dart';
-import 'package:story_app/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:story_app/src/features/auth/presentation/screens/login_screen.dart';
-import 'package:story_app/src/features/auth/presentation/screens/register_screen.dart';
-import 'package:story_app/src/features/auth/presentation/screens/splash_screen.dart';
-import 'package:story_app/src/features/story/presentation/screens/add_story_screen.dart';
-import 'package:story_app/src/features/story/presentation/screens/pick_location_screen.dart';
-import 'package:story_app/src/features/story/presentation/screens/story_detail_screen.dart';
-import 'package:story_app/src/features/story/presentation/screens/story_list_screen.dart';
+import 'package:story_app/src/core/core.dart';
+import 'package:story_app/src/features/auth/presentation/presentation.dart';
+import 'package:story_app/src/features/story/presentation/presentation.dart';
 
 class AppRouter {
   final AuthBloc authBloc;

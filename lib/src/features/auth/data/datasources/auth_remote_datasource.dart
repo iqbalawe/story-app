@@ -1,8 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:story_app/src/core/network/dio_client.dart';
-import 'package:story_app/src/core/utils/exception_handler.dart';
-import 'package:story_app/src/features/auth/data/models/login_response_model.dart';
-import 'package:story_app/src/features/auth/data/models/register_response_model.dart';
+import 'package:story_app/src/core/core.dart';
+import 'package:story_app/src/features/auth/data/data.dart';
 
 abstract class AuthRemoteDatasource {
   Future<bool> login(String email, String password);

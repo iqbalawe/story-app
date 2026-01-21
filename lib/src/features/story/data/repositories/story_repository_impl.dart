@@ -10,8 +10,16 @@ class StoryRepositoryImpl implements StoryRepository {
   final StoryRemoteDatasource remoteDatasource;
 
   @override
-  Future<List<Story>> getStories() async {
-    final storyModels = await remoteDatasource.getAllStories();
+  Future<List<Story>> getStories({
+    int page = 1,
+    int size = 10,
+    int location = 0,
+  }) async {
+    final storyModels = await remoteDatasource.getAllStories(
+      page: page,
+      size: size,
+      location: location,
+    );
 
     return storyModels
         .map(
@@ -21,6 +29,8 @@ class StoryRepositoryImpl implements StoryRepository {
             description: model.description,
             photoUrl: model.photoUrl,
             createdAt: model.createdAt,
+            lat: model.lat,
+            lon: model.lon,
           ),
         )
         .toList();

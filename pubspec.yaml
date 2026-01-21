@@ -51,6 +51,8 @@ dependencies:
   google_maps_flutter: ^2.14.0
   location: ^8.0.1
   geocoding: ^4.0.0
+  bloc_concurrency: ^0.3.0
+  stream_transform: ^2.1.1
 
 dev_dependencies:
   flutter_test:

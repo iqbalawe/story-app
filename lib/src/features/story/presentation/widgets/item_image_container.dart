@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:story_app/src/core/utils/custom_cache_manager.dart';
-import 'package:story_app/src/core/widgets/shimmer_skeleton.dart';
-import 'package:story_app/src/features/story/domain/entities/story.dart';
+import 'package:story_app/src/core/core.dart';
+import 'package:story_app/src/features/story/domain/domain.dart';
 
 class ItemImageContainer extends StatelessWidget {
   const ItemImageContainer({required this.story, this.height = 200, super.key});

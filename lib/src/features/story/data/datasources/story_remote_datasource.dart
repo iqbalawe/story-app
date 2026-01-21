@@ -9,7 +9,11 @@ import 'package:story_app/src/features/story/data/models/story_detail_response_m
 import 'package:story_app/src/features/story/data/models/story_model.dart';
 
 abstract class StoryRemoteDatasource {
-  Future<List<StoryModel>> getAllStories();
+  Future<List<StoryModel>> getAllStories({
+    int page = 1,
+    int size = 10,
+    int location = 0,
+  });
   Future<StoryModel> getStoryDetail(String id);
   Future<String> addStory(
     File imageFile,
@@ -26,7 +30,11 @@ class StoryRemoteDatasourceImpl extends StoryRemoteDatasource {
   final FlutterSecureStorage storage;
 
   @override
-  Future<List<StoryModel>> getAllStories() async {
+  Future<List<StoryModel>> getAllStories({
+    int page = 1,
+    int size = 10,
+    int location = 0,
+  }) async {
     try {
       String? token = await storage.read(key: 'auth_token');
 
@@ -36,6 +44,7 @@ class StoryRemoteDatasourceImpl extends StoryRemoteDatasource {
 
       final response = await dioClient.dio.get(
         '/stories',
+        queryParameters: {'page': page, 'size': size, 'location': location},
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 

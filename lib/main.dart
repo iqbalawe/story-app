@@ -4,20 +4,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:story_app/l10n/app_localizations.dart';
-import 'package:story_app/src/core/bloc/localization_bloc.dart';
-import 'package:story_app/src/core/network/dio_client.dart';
-import 'package:story_app/src/core/observer/simple_bloc_observer.dart';
-import 'package:story_app/src/core/router/app_router.dart';
-import 'package:story_app/src/core/theme/app_theme.dart';
-import 'package:story_app/src/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:story_app/src/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:story_app/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:story_app/src/features/story/data/datasources/story_remote_datasource.dart';
-import 'package:story_app/src/features/story/data/repositories/story_repository_impl.dart';
-import 'package:story_app/src/features/story/presentation/blocs/add_story/add_story_bloc.dart';
-import 'package:story_app/src/features/story/presentation/blocs/detail/story_detail_bloc.dart';
-import 'package:story_app/src/features/story/presentation/blocs/story/story_bloc.dart';
+import 'package:story_app/src/core/core.dart';
+import 'package:story_app/src/features/auth/data/data.dart';
+import 'package:story_app/src/features/auth/presentation/bloc/bloc.dart';
+import 'package:story_app/src/features/story/data/data.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import 'src/features/story/presentation/presentation.dart';
 
 void main() async {
   Bloc.observer = SimpleBlocObserver();

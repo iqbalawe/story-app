@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:story_app/src/features/story/domain/entities/story.dart';
-import 'package:story_app/src/features/story/domain/repositories/story_repository.dart';
+import 'package:story_app/src/features/story/domain/domain.dart';
 
 part 'story_detail_event.dart';
 part 'story_detail_state.dart';
