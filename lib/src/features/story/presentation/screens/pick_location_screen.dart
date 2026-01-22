@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart' as geo;
+import 'package:story_app/l10n/app_localizations.dart';
 import 'package:story_app/src/features/story/presentation/presentation.dart';
 
 class PickLocationScreen extends StatefulWidget {
@@ -15,14 +16,15 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
   final LatLng _defaultLocation = const LatLng(-6.1753924, 106.8271528);
 
   LatLng? _selectedLocation;
-  String _address = 'Pilih lokasi dengan menekan peta';
+  String? _address;
   bool _isLoadingAddress = false;
 
   GoogleMapController? _mapController;
   final Set<Marker> _markers = {};
 
-  Future<void> _getAddress(double lat, double lon) async {
+  Future<void> _getAddress(BuildContext context, double lat, double lon) async {
     setState(() {
+      _address = AppLocalizations.of(context)!.address;
       _isLoadingAddress = true;
     });
 
@@ -44,7 +46,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
       }
     } catch (e) {
       setState(() {
-        _address = 'Gagal memuat alamat';
+        _address = AppLocalizations.of(context)!.failedAddress;
       });
     } finally {
       setState(() {
@@ -53,7 +55,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
     }
   }
 
-  void _onMapTapped(LatLng latLng) {
+  void _onMapTapped(BuildContext context, LatLng latLng) {
     setState(() {
       _selectedLocation = latLng;
       _markers.clear();
@@ -62,7 +64,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
       );
     });
     _mapController?.animateCamera(CameraUpdate.newLatLng(latLng));
-    _getAddress(latLng.latitude, latLng.longitude);
+    _getAddress(context, latLng.latitude, latLng.longitude);
   }
 
   void _confirmSelection() {
@@ -86,7 +88,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
             ),
             onMapCreated: (controller) => _mapController = controller,
             markers: _markers,
-            onTap: _onMapTapped,
+            onTap: (latLng) => _onMapTapped(context, latLng),
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
             mapToolbarEnabled: false,
@@ -108,7 +110,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
               left: 0,
               right: 0,
               child: LocationCard(
-                address: _address,
+                address: _address ?? '',
                 onPressed: _confirmSelection,
                 isLoadingAddress: _isLoadingAddress,
                 selectedLocation: _selectedLocation,

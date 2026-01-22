@@ -25,5 +25,15 @@
   "refreshButtonText": "Coba Lagi",
   "logoutDialogText": "Apakah anda yakin ingin keluar aplikasi?",
   "yes": "Ya",
-  "no": "Tidak"
+  "no": "Tidak",
+  "likedButtonText": "Anda menyukai cerita ini!",
+  "selectLocation": "Pilih Lokasi",
+  "changeLocation": "Ubah Lokasi",
+  "lockedFeatureInfo": "Fitur lokasi hanya tersedia untuk versi berbayar (Paid).",
+  "selectImageValidation": "Mohon pilih gambar terlebih dahulu",
+  "writeDescriptionValidation": "Mohon isi deskripsi",
+  "address": "Pilih lokasi dengan menekan peta",
+  "failedAddress": "Gagal memuat peta",
+  "selectedLocation": "Lokasi Terpilih",
+  "selectedLocationButtonText": "Pilih Lokasi Ini"
 }

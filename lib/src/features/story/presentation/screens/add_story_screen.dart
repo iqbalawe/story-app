@@ -52,12 +52,15 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
     if (_imageFile == null) {
       myShowSnackbar(
         context: context,
-        text: 'Mohon pilih gambar terlebih dahulu',
+        text: AppLocalizations.of(context)!.selectImageValidation,
       );
       return;
     }
     if (_descriptionController.text.isEmpty) {
-      myShowSnackbar(context: context, text: 'Mohon isi deskripsi');
+      myShowSnackbar(
+        context: context,
+        text: AppLocalizations.of(context)!.writeDescriptionValidation,
+      );
       return;
     }
 
@@ -182,26 +185,31 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                     _selectedLocation == null ? Icons.map : Icons.edit_location,
                   ),
                   label: Text(
-                    _selectedLocation == null ? 'Pilih Lokasi' : 'Ubah Lokasi',
+                    _selectedLocation == null
+                        ? AppLocalizations.of(context)!.selectLocation
+                        : AppLocalizations.of(context)!.changeLocation,
                   ),
                 ),
               ] else ...[
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: theme.colorScheme.secondary,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: Colors.grey),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.lock_outline, color: Colors.grey),
+                      Icon(
+                        Icons.lock_outline,
+                        color: theme.colorScheme.outline,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'Fitur lokasi hanya tersedia untuk versi berbayar (Paid).',
+                          AppLocalizations.of(context)!.lockedFeatureInfo,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.grey,
+                            color: theme.colorScheme.secondary,
                           ),
                         ),
                       ),

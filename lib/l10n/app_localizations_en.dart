@@ -92,4 +92,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get no => 'No';
+
+  @override
+  String get likedButtonText => 'You liked this post!';
+
+  @override
+  String get selectLocation => 'Select Location';
+
+  @override
+  String get changeLocation => 'Change Location';
+
+  @override
+  String get lockedFeatureInfo =>
+      'The location feature is only available for the paid version.';
+
+  @override
+  String get selectImageValidation => 'Please select an image first';
+
+  @override
+  String get writeDescriptionValidation => 'Please fill in the description';
+
+  @override
+  String get address => 'Select a location by pressing the map';
+
+  @override
+  String get failedAddress => 'Failed to load map';
+
+  @override
+  String get selectedLocation => 'Selected Location';
+
+  @override
+  String get selectedLocationButtonText => 'Select This Location';
 }

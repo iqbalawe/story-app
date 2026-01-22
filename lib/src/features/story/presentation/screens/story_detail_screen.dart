@@ -56,7 +56,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           if (_isLiked) {
             myShowSnackbar(
               context: context,
-              text: 'You liked this story! ❤️',
+              text: '${AppLocalizations.of(context)!.likedButtonText} ❤️',
               backgroundColor: theme.colorScheme.secondary,
             );
           }

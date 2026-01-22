@@ -12,43 +12,57 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      color: theme.colorScheme.surface,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            children: [
+              CircleAvatar(child: Text(getInitials(story.name))),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(story.name, style: theme.textTheme.titleLarge),
+                  Text(
+                    DateFormatter.formatTimeAgo(
+                      '${story.createdAt}',
+                      Localizations.localeOf(context).languageCode,
+                    ),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.secondary,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
             child: ItemImageContainer(story: story, height: 200),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(story.name, style: theme.textTheme.headlineMedium),
-                Text(
-                  story.description,
-                  style: theme.textTheme.titleMedium,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  DateFormatter.formatTimeAgo(
-                    '${story.createdAt}',
-                    Localizations.localeOf(context).languageCode,
-                  ),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.secondary,
-                  ),
-                ),
-              ],
-            ),
+          const SizedBox(height: 12),
+          Text(
+            story.description,
+            style: theme.textTheme.bodyLarge,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
     );
+  }
+
+  String getInitials(String name) {
+    List<String> words = story.name.split(' ');
+    String initials = '';
+
+    for (var word in words) {
+      initials += word[0].toUpperCase();
+    }
+
+    return initials;
   }
 }

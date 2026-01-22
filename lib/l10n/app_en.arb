@@ -25,5 +25,15 @@
   "refreshButtonText": "Try Again",
   "logoutDialogText": "Are you sure you want to exit the application?",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "likedButtonText": "You liked this post!",
+  "selectLocation": "Select Location",
+  "changeLocation": "Change Location",
+  "lockedFeatureInfo": "The location feature is only available for the paid version.",
+  "selectImageValidation": "Please select an image first",
+  "writeDescriptionValidation": "Please fill in the description",
+  "address": "Select a location by pressing the map",
+  "failedAddress": "Failed to load map",
+  "selectedLocation": "Selected Location",
+  "selectedLocationButtonText": "Select This Location"
 }

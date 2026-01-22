@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:story_app/l10n/app_localizations.dart';
 
 class LocationCard extends StatelessWidget {
   const LocationCard({
@@ -37,7 +38,7 @@ class LocationCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Lokasi Terpilih',
+            AppLocalizations.of(context)!.selectedLocation,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -73,7 +74,9 @@ class LocationCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text('Pilih Lokasi Ini'),
+            child: Text(
+              AppLocalizations.of(context)!.selectedLocationButtonText,
+            ),
           ),
         ],
       ),

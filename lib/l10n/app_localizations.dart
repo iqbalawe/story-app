@@ -259,6 +259,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No'**
   String get no;
+
+  /// No description provided for @likedButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'You liked this post!'**
+  String get likedButtonText;
+
+  /// No description provided for @selectLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Location'**
+  String get selectLocation;
+
+  /// No description provided for @changeLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Location'**
+  String get changeLocation;
+
+  /// No description provided for @lockedFeatureInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'The location feature is only available for the paid version.'**
+  String get lockedFeatureInfo;
+
+  /// No description provided for @selectImageValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select an image first'**
+  String get selectImageValidation;
+
+  /// No description provided for @writeDescriptionValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in the description'**
+  String get writeDescriptionValidation;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a location by pressing the map'**
+  String get address;
+
+  /// No description provided for @failedAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load map'**
+  String get failedAddress;
+
+  /// No description provided for @selectedLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Location'**
+  String get selectedLocation;
+
+  /// No description provided for @selectedLocationButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Select This Location'**
+  String get selectedLocationButtonText;
 }
 
 class _AppLocalizationsDelegate

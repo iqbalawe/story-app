@@ -92,4 +92,35 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get no => 'Tidak';
+
+  @override
+  String get likedButtonText => 'Anda menyukai cerita ini!';
+
+  @override
+  String get selectLocation => 'Pilih Lokasi';
+
+  @override
+  String get changeLocation => 'Ubah Lokasi';
+
+  @override
+  String get lockedFeatureInfo =>
+      'Fitur lokasi hanya tersedia untuk versi berbayar (Paid).';
+
+  @override
+  String get selectImageValidation => 'Mohon pilih gambar terlebih dahulu';
+
+  @override
+  String get writeDescriptionValidation => 'Mohon isi deskripsi';
+
+  @override
+  String get address => 'Pilih lokasi dengan menekan peta';
+
+  @override
+  String get failedAddress => 'Gagal memuat peta';
+
+  @override
+  String get selectedLocation => 'Lokasi Terpilih';
+
+  @override
+  String get selectedLocationButtonText => 'Pilih Lokasi Ini';
 }
