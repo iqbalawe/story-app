@@ -17,10 +17,17 @@ class LoadingStoryDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ShimmerSkeleton(height: 24, width: 120),
-                    ShimmerSkeleton(height: 16, width: 80),
+                    ShimmerSkeleton(height: 48, width: 48, radius: 24),
+                    SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ShimmerSkeleton(height: 18, width: 140),
+                        SizedBox(height: 6),
+                        ShimmerSkeleton(height: 14, width: 100),
+                      ],
+                    ),
                   ],
                 ),
                 SizedBox(height: 24),
@@ -28,16 +35,14 @@ class LoadingStoryDetail extends StatelessWidget {
                 SizedBox(height: 8),
                 ShimmerSkeleton(height: 16, width: double.infinity),
                 SizedBox(height: 8),
-                ShimmerSkeleton(height: 16, width: 250),
+                ShimmerSkeleton(height: 16, width: double.infinity),
                 SizedBox(height: 8),
-                ShimmerSkeleton(height: 16, width: 300),
+                ShimmerSkeleton(height: 16, width: 200),
                 SizedBox(height: 32),
-                Row(
-                  children: [
-                    ShimmerSkeleton(height: 24, width: 24, radius: 12),
-                    SizedBox(width: 8),
-                    ShimmerSkeleton(height: 16, width: 150),
-                  ],
+                ShimmerSkeleton(
+                  height: 200,
+                  width: double.infinity,
+                  radius: 12,
                 ),
               ],
             ),

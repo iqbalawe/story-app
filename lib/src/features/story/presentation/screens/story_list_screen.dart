@@ -100,10 +100,8 @@ class _StoryListScreenState extends State<StoryListScreen> {
     } else if (state.status == StoryStatus.success && state.stories.isEmpty) {
       return const EmptyStoriesWidget();
     } else {
-      return ListView.builder(
-        controller: _scrollController,
-        key: const ValueKey('story_list'),
-        physics: const AlwaysScrollableScrollPhysics(),
+      return StoryListBody(
+        scrollController: _scrollController,
         itemCount: state.hasReachedMax
             ? state.stories.length
             : state.stories.length + 1,

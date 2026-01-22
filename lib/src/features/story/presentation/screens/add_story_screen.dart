@@ -18,18 +18,26 @@ class AddStoryScreen extends StatefulWidget {
 
 class _AddStoryScreenState extends State<AddStoryScreen> {
   final _descriptionController = TextEditingController();
-  File? _imageFile;
   final _picker = ImagePicker();
+
+  File? _imageFile;
   LatLng? _selectedLocation;
   String? _selectedAddress;
+
+  bool _isSuccess = false;
+
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   Future<void> _onPickLocation() async {
     final result = await context.push<Map<String, dynamic>>('/pick-location');
 
     if (result != null) {
       setState(() {
-        final latLng = result['latLng'] as LatLng;
-        _selectedLocation = latLng;
+        _selectedLocation = result['latLng'] as LatLng;
         _selectedAddress = result['address'] as String;
       });
     }
@@ -49,17 +57,19 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   }
 
   void _uploadStory() {
+    final localizations = AppLocalizations.of(context)!;
+
     if (_imageFile == null) {
       myShowSnackbar(
         context: context,
-        text: AppLocalizations.of(context)!.selectImageValidation,
+        text: localizations.selectImageValidation,
       );
       return;
     }
     if (_descriptionController.text.isEmpty) {
       myShowSnackbar(
         context: context,
-        text: AppLocalizations.of(context)!.writeDescriptionValidation,
+        text: localizations.writeDescriptionValidation,
       );
       return;
     }
@@ -78,11 +88,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final appBarColor = theme.appBarTheme.foregroundColor;
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context)!.addStoryTitle,
+          localizations.addStoryTitle,
           style: theme.textTheme.titleLarge?.copyWith(color: appBarColor),
         ),
         centerTitle: true,
@@ -109,117 +120,108 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
           ),
         ],
       ),
-      body: BlocListener<AddStoryBloc, AddStoryState>(
-        listener: (context, state) {
-          state.maybeWhen(
-            success: (message) {
-              myShowSnackbar(
-                context: context,
-                text: message,
-                backgroundColor: Colors.green,
+      body: Stack(
+        children: [
+          BlocListener<AddStoryBloc, AddStoryState>(
+            listener: (context, state) {
+              state.maybeWhen(
+                success: (message) async {
+                  setState(() {
+                    _isSuccess = true;
+                  });
+
+                  context.read<StoryBloc>().add(
+                    const StoryEvent.refreshStories(),
+                  );
+
+                  await Future.delayed(const Duration(milliseconds: 1500));
+
+                  if (mounted) {
+                    context.pop();
+                  }
+                },
+                failure: (message) {
+                  myShowSnackbar(context: context, text: message);
+                },
+                orElse: () {},
               );
-              context.read<StoryBloc>().add(const StoryEvent.refreshStories());
-              context.pop();
             },
-            failure: (message) {
-              myShowSnackbar(context: context, text: message);
-            },
-            orElse: () {},
-          );
-        },
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ImageUploadContainer(
-                imageFile: _imageFile,
-                onTapCamera: () => _pickImage(ImageSource.camera),
-                onTapGallery: () => _pickImage(ImageSource.gallery),
-              ),
-              const SizedBox(height: 24),
-              TextField(
-                controller: _descriptionController,
-                maxLines: null,
-                minLines: 4,
-                keyboardType: TextInputType.multiline,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                ),
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.addStoryDescription,
-                  hintStyle: theme.textTheme.bodyLarge?.copyWith(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.5),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ImageUploadContainer(
+                    imageFile: _imageFile,
+                    onTapCamera: () => _pickImage(ImageSource.camera),
+                    onTapGallery: () => _pickImage(ImageSource.gallery),
                   ),
-                  filled: false,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const SizedBox(height: 24),
-              if (FlavorConfig.isPaid) ...[
-                if (_selectedLocation != null) ...[
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        color: theme.colorScheme.primary,
-                        size: 32,
+                  const SizedBox(height: 24),
+                  TextField(
+                    controller: _descriptionController,
+                    maxLines: null,
+                    minLines: 4,
+                    keyboardType: TextInputType.multiline,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(
+                        context,
+                      )!.addStoryDescription,
+                      hintStyle: theme.textTheme.bodyLarge?.copyWith(
+                        color: theme.colorScheme.outline.withValues(alpha: 0.5),
                       ),
-                      Expanded(
-                        child: Text(
-                          _selectedAddress ?? '',
-                          style: theme.textTheme.bodyMedium,
-                        ),
-                      ),
-                    ],
+                      filled: false,
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
+                    ),
                   ),
-                  const SizedBox(height: 8),
-                ],
-                OutlinedButton.icon(
-                  onPressed: _onPickLocation,
-                  icon: Icon(
-                    _selectedLocation == null ? Icons.map : Icons.edit_location,
-                  ),
-                  label: Text(
-                    _selectedLocation == null
-                        ? AppLocalizations.of(context)!.selectLocation
-                        : AppLocalizations.of(context)!.changeLocation,
-                  ),
-                ),
-              ] else ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.secondary,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.lock_outline,
-                        color: theme.colorScheme.outline,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          AppLocalizations.of(context)!.lockedFeatureInfo,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.secondary,
+                  const SizedBox(height: 24),
+                  if (FlavorConfig.isPaid) ...[
+                    if (_selectedLocation != null) ...[
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: theme.colorScheme.primary,
+                            size: 32,
                           ),
-                        ),
+                          Expanded(
+                            child: Text(
+                              _selectedAddress ?? '',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 8),
                     ],
-                  ),
-                ),
-              ],
-            ],
+                    OutlinedButton.icon(
+                      onPressed: _onPickLocation,
+                      icon: Icon(
+                        _selectedLocation == null
+                            ? Icons.map
+                            : Icons.edit_location,
+                      ),
+                      label: Text(
+                        _selectedLocation == null
+                            ? AppLocalizations.of(context)!.selectLocation
+                            : AppLocalizations.of(context)!.changeLocation,
+                      ),
+                    ),
+                  ] else ...[
+                    const LockedFeatureContainer(),
+                  ],
+                ],
+              ),
+            ),
           ),
-        ),
+          if (_isSuccess) const SuccessAddStoryDialog(),
+        ],
       ),
     );
   }
